@@ -1,0 +1,30 @@
+{
+  "name": "isocial",
+  "version": "1.0.0",
+  "description": "A social media web application to learn Node, MongoDB and Express",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./index.js",
+    "dev": "nodemon ./index.js"
+  },
+  "keywords": [
+    "MERN",
+    "MongoDB",
+    "Mongoose",
+    "Express",
+    "Javascript",
+    "Node.js",
+    "social",
+    "media",
+    "webApp"
+  ],
+  "author": "Samar Warsi",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
