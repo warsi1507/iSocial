@@ -33,7 +33,7 @@ module.exports.create = async function (req, res) {
         // Check if passwords match
         if (req.body.password !== req.body.confirm_password) {
             console.log("Passwords do not match.");
-            return res.redirect('back');
+            return res.redirect('Referrer' || '/');
         }
 
         // Check if the user already exists
