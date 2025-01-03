@@ -8,7 +8,7 @@ const User = require('../models/user');
 passport.use(new LocalStrategy({
         usernameField: 'email',
     },
-    async function (req, email, password, done) {
+    async function (email, password, done) {
         try {
             // Find user by email
             const user = await User.findOne({ email: email });
