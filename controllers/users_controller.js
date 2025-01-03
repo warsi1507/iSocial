@@ -71,3 +71,14 @@ module.exports.create = async function (req, res) {
 module.exports.createSession = function (req, res) {
     return res.redirect('/');
 }
+
+// Sign out 
+module.exports.destroySession = function (req, res){
+    req.logout(function(err) {
+        if (err) {
+            console.error('Error during logout:', err);
+            return res.redirect('/error'); // Handle error if needed
+        }
+        return res.redirect('/'); // Redirect after successful logout
+    });
+}
