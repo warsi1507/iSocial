@@ -12,7 +12,7 @@ const app = express();
 const port = 8000;
 
 // using cookie parser
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // use static-pages
@@ -44,6 +44,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(passport.setAuthenticatedUser);
 // use express router
 app.use('/', require('./routes/index.js'));
 
