@@ -2,6 +2,7 @@ const express = require('express');
 const expressLayout = require('express-ejs-layouts');
 const db = require('./configs/mongoose.js');
 const cookieParser = require('cookie-parser');
+const sassMiddleware = require('./configs/sass-middleware.js');
 
 // for session cookie
 const session = require('express-session');
@@ -12,9 +13,11 @@ const MongoStore = require('connect-mongo');
 const app = express();
 const port = 8000;
 
-// using cookie parser
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// use sass middleware
+app.use('/css', sassMiddleware)
 
 // use static-pages
 app.use(express.static('./assets'))
