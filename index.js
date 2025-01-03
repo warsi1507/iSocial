@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./configs/passport-local-strategy.js');
+const MongoStore = require('connect-mongo');
 
 const app = express();
 const port = 8000;
@@ -29,7 +30,7 @@ app.set('layout extractScripts', true)
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
-// 
+// mongo store is used to store the session cookie in the db
 app.use(session({
     name: 'iSocial',
     // TODO : change it before deployment
@@ -38,7 +39,13 @@ app.use(session({
     resave: false,
     cookie: {
         maxAge: (1000 * 60 * 100)
-    }
+    },
+    store: new MongoStore(
+        {
+            client: db.getClient(),
+            autoRemove: 'disabled'
+        }
+    )
 }));
 
 app.use(passport.initialize());
