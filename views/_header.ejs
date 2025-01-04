@@ -1,24 +1,27 @@
 <header>
-    just a random header...
+    <div id="logo-container">
+        <a href="/"><img src="/images/iSocial-logo.png" alt="__company-logo__" id="headerLogo"></a>
+    </div>
+    <div id="buttons-container">
+        <% if (locals.user) { %>
 
-    <% if (locals.user) { %>
-
-        <li>
-            <a href="/users/profile"><%= user.name %></a>
-        </li>
-        <li>
-            <a href="/users/sign-out">Sign Out</a>
-        </li>
-
-    <% } else { %>
+            <div id="user-profile-button">
+                <a href="/users/profile"><%= user.name %></a>
+            </div>
+            <div>
+                <a href="/users/sign-out">SIGN OUT</a>
+            </div>
         
-        <li>
-            <a href="/users/sign-in">Sign In</a>
-        </li>
-
-        <li>
-            <a href="/users/sign-up">Sign Up</a>
-        </li>
-
-    <% } %>
+        <% } else { %>
+            
+            <div>
+                <a href="/users/sign-in">SIGN IN</a>
+            </div>
+        
+            <div>
+                <a href="/users/sign-up">SIGN UP</a>
+            </div>
+        
+        <% } %>
+    </div>
 </header>
