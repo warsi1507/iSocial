@@ -11,7 +11,7 @@ module.exports.create = async function(req, res){
         
         return res.redirect(req.get('Referer') || '/');
     } catch (err) {
-        console.error("Error in user creation:", err);
+        console.error("Error in post creation:", err);
         return res.status(500).send("Internal Server Error");
     }
 }

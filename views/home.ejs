@@ -1,9 +1,29 @@
 <h1>iSocial | <%= title %> </h1>
 
 <section id="feed-posts">
-    <h4>Make a Post</h4>
-    <form action="/posts/create" method="post">
-        <textarea name="content" cols="30" rows="5"></textarea>
-        <input type="submit" value="POST">
-    </form>
+
+    <% if (locals.user) { %>
+        <h4>Make a Post</h4>
+        <form action="/posts/create" method="post">
+            <textarea name="content" cols="30" rows="5"></textarea>
+            <input type="submit" value="POST">
+        </form>
+    <% } %>
+
+    <div id="posts-list-container">
+        <h4>Posts</h4>
+        <ul>
+            <% for(post of posts) { %>
+                <li>
+                    <p>
+                        <small>
+                            <%= post.user.name %>
+                        </small>
+                        <br>
+                        <%= post.content %>
+                    </p>
+                </li>
+            <% } %>
+        </ul>
+    </div>
 </section>
