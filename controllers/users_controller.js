@@ -41,7 +41,7 @@ module.exports.create = async function (req, res) {
         // Check if passwords match
         if (req.body.password !== req.body.confirm_password) {
             console.log("Passwords do not match.");
-            return res.redirect('Referrer' || '/');
+            return res.redirect(req.get('Referer') || '/');
         }
 
         // Check if the user already exists
@@ -49,7 +49,7 @@ module.exports.create = async function (req, res) {
 
         if (user) {
             console.log("User already exists.");
-            return res.redirect('Referrer' || '/');
+            return res.redirect(req.get('Referer') || '/');
         }
 
         // Create a new user

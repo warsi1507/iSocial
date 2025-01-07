@@ -1,1 +1,9 @@
-    <h1>iSocial / <%= title %> </h1>
+<h1>iSocial | <%= title %> </h1>
+
+<section id="feed-posts">
+    <h4>Make a Post</h4>
+    <form action="/posts/create" method="post">
+        <textarea name="content" cols="30" rows="5"></textarea>
+        <input type="submit" value="POST">
+    </form>
+</section>
