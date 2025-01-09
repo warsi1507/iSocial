@@ -1,16 +1,26 @@
 const User = require('../models/user')
 
-module.exports.profile = function (req, res) {
+module.exports.profile = async function (req, res) {
+    let user = await User.findById(req.params.id);
     return res.render('profile', {
-        title: "Profile"
+        title: "Profile",
+        profile_user: user
     });
 }
 
-// render users posts
-module.exports.posts = function (req, res) {
-    return res.render('posts', {
-        title: "Posts"
-    });
+module.exports.update = async function(req, res){
+    try {
+        if(req.user.id == req.params.id){
+            await User.findByIdAndUpdate(req.params.id, req.body)
+            return res.redirect(req.get('Referer') || '/');
+        }
+        else{
+            return res.status(401).send('Unauthorized');
+        }
+    } catch (err) {
+        console.error("Error in user profile updating:", err);
+        return res.status(500).send("Internal Server Error");
+    }
 }
 
 // render the sign-up page

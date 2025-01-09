@@ -2,11 +2,12 @@
     <div id="logo-container">
         <a href="/"><img src="/images/iSocial-logo.png" alt="__company-logo__" id="headerLogo"></a>
     </div>
+
     <div id="buttons-container">
         <% if (locals.user) { %>
 
             <div id="user-profile-button">
-                <a href="/users/profile"><%= user.name %></a>
+                <a href="/users/profile/<%= user.id %>"><%= user.name %></a>
             </div>
             <div>
                 <a href="/users/sign-out">SIGN OUT</a>
@@ -17,7 +18,6 @@
             <div>
                 <a href="/users/sign-in">SIGN IN</a>
             </div>
-        
             <div>
                 <a href="/users/sign-up">SIGN UP</a>
             </div>

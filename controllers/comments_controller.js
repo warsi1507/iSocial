@@ -30,7 +30,7 @@ module.exports.destroy = async function(req, res){
 
             await reqComment.deleteOne();
 
-            await Post.findByIdAndUpdate(postID, {$pull: {comments: req.params.id}});
+            await Post.findByIdAndDelete(postID, {$pull: {comments: req.params.id}});
 
             return res.redirect(req.get('Referer') || '/')
         }
