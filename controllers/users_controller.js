@@ -12,9 +12,11 @@ module.exports.update = async function(req, res){
     try {
         if(req.user.id == req.params.id){
             await User.findByIdAndUpdate(req.params.id, req.body)
+            req.flash('success', 'User Profile Updated');
             return res.redirect(req.get('Referer') || '/');
         }
         else{
+            req.flash('error', 'You are not allowed to update this Profile')
             return res.status(401).send('Unauthorized');
         }
     } catch (err) {
@@ -50,7 +52,7 @@ module.exports.create = async function (req, res) {
     try {
         // Check if passwords match
         if (req.body.password !== req.body.confirm_password) {
-            console.log("Passwords do not match.");
+            req.flash('error', 'Password and Confirm Password do not match')
             return res.redirect(req.get('Referer') || '/');
         }
 
@@ -58,7 +60,7 @@ module.exports.create = async function (req, res) {
         let user = await User.findOne({ email: req.body.email });
 
         if (user) {
-            console.log("User already exists.");
+            req.flash('error', 'User with that email-id already exists');
             return res.redirect(req.get('Referer') || '/');
         }
 
@@ -67,6 +69,7 @@ module.exports.create = async function (req, res) {
         console.log("***** User Account Created *****");
         console.log(newUser);
 
+        req.flash('success', 'User Account Created !!')
         // Redirect to sign-in page
         return res.redirect('/users/sign-in');
     } catch (err) {
@@ -79,6 +82,7 @@ module.exports.create = async function (req, res) {
 
 // Sign in and create a session
 module.exports.createSession = function (req, res) {
+    req.flash('success', 'Logged in Successfully');
     return res.redirect('/');
 }
 
@@ -89,6 +93,7 @@ module.exports.destroySession = function (req, res){
             console.error('Error during logout:', err);
             return res.redirect('/error'); // Handle error if needed
         }
+        req.flash('success', 'Logged out Successfully')
         return res.redirect('/'); // Redirect after successful logout
     });
 }

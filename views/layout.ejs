@@ -8,21 +8,65 @@
     </title>
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/header.css">
-    <link rel="stylesheet" href="/css/footer.css">
-
+    <link rel="stylesheet" href="/css/footer.css">\
+    
     <%- style %>
+    
+    <!-- Toastr CSS and JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <link rel="shortcut icon" href="/images/iSocial-favicon.png" type="image/x-icon">
 </head>
 <body>
+    <!-- Header Include -->
     <%- include('_header'); %>
 
+    <!-- Flash Message Handling -->
+    <script>
+        // Set global Toastr options
+        toastr.options = {
+            "closeButton": true,               // Show close button
+            "debug": false,                    // Debug mode
+            "newestOnTop": true,               // New messages appear on top
+            "progressBar": true,               // Show progress bar
+            "positionClass": "toast-top-right", // Positioning: top-right, bottom-right, etc.
+            "preventDuplicates": true,         // Prevent duplicate messages
+            "onclick": null,                   // Callback on click
+            "showDuration": "300",             // Show animation duration (ms)
+            "hideDuration": "1000",            // Hide animation duration (ms)
+            "timeOut": "5000",                 // Auto-hide time (ms)
+            "extendedTimeOut": "1000",         // Extra time on hover (ms)
+            "showEasing": "swing",             // Easing function for show animation
+            "hideEasing": "linear",            // Easing function for hide animation
+            "showMethod": "fadeIn",            // Animation method for showing
+            "hideMethod": "fadeOut"            // Animation method for hiding
+        };
+
+    </script>
+
+    <% if (flash && flash.success && flash.success.length > 0) { %>
+        <script>
+            toastr.success("<%= flash.success %>");
+        </script>
+    <% } %>
+
+    <% if (flash && flash.error && flash.error.length > 0) { %>
+        <script>
+            toastr.error("<%= flash.error %>");
+        </script>
+    <% } %>
+
+    <!-- Main Content -->
     <main id="layout-main">
         <%- body %>
     </main>
 
+    <!-- Footer Include -->
     <%- include('_footer'); %>
 
+    <!-- Additional Scripts -->
     <%- script %>
 </body>
 </html>

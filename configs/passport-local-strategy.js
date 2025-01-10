@@ -7,19 +7,22 @@ const User = require('../models/user');
 // authentication using passport 
 passport.use(new LocalStrategy({
         usernameField: 'email',
+        passReqToCallback: true
     },
-    async function (email, password, done) {
+    async function (req, email, password, done) {
         try {
             // Find user by email
             const user = await User.findOne({ email: email });
 
             if (!user) {
+                req.flash('error', 'Invalid Username or Password');
                 console.log(`Login failed: User with email ${email} not found`);
                 return done(null, false);
             }
 
-            const isMatch = (User.password !== password);
+            const isMatch = (user.password == password);
             if (!isMatch) {
+                req.flash('error', 'Invalid Username or Password');
                 console.log(`Login failed: Incorrect password for user ${email}`);
                 return done(null, false);
             }
@@ -27,6 +30,7 @@ passport.use(new LocalStrategy({
             // Successful authentication
             return done(null, user);
         } catch (err) {
+            req.flash('error', err);
             console.error('Error during authentication:', err);
             return done(err);
         }

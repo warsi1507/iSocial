@@ -14,6 +14,7 @@ module.exports.create = async function(req, res){
             post.comments.push(comment);
             post.save();
 
+            req.flash('success', 'Comment was Added');
             return res.redirect('/')
         }
     } catch (err) {
@@ -30,12 +31,14 @@ module.exports.destroy = async function(req, res){
 
             await reqComment.deleteOne();
 
-            await Post.findByIdAndDelete(postID, {$pull: {comments: req.params.id}});
+            await Post.findByIdAndUpdate(postID, {$pull: {comments: req.params.id}});
 
-            return res.redirect(req.get('Referer') || '/')
+            req.flash('success', 'Comment Deleted');
+            return res.redirect(req.get('Referer') || '/');
         }
         else{
-            return res.redirect('/')
+            req.flash('error', 'You are not allowed to delete this post !!');
+            return res.redirect('/');
         }
     } catch (err) {
         console.error("Error in comment deletion:", err);

@@ -14,7 +14,7 @@ module.exports.home = async function (req, res) {
 
         let users = await User.find({})
         
-        return res.render('home', {
+        return res.status(200).render('home', {
             title: "iSocial | Home",
             posts: posts,
             all_users: users
