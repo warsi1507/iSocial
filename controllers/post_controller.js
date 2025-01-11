@@ -8,21 +8,26 @@ module.exports.create = async function(req, res){
             user: req.user._id
         });
 
-        newPost = await newPost.populate('user');
-
         if(req.xhr){
             return res.status(200).json({
                 data:{
-                    post: newPost
+                    post: await newPost.populate('user', 'name')
                 },
-                message: "POST CREATED !!"
+                message: "Post was Created"
             });
         }
     
         req.flash('success', 'Post was Created');
         return res.redirect(req.get('Referer') || '/');
+
     } catch (err) {
+
         console.error("Error in post creation:", err);
+        if (req.xhr) {
+            return res.status(500).json({
+                message: "Internal Server Error"
+            });
+        }
         return res.status(500).send("Internal Server Error");
     }
 }
@@ -42,7 +47,7 @@ module.exports.destroy = async function (req, res) {
                     data: {
                         post_id: req.params.id
                     },
-                    message: "Post Deleted !!"
+                    message: "Post Deleted"
                 })
             }
 
@@ -50,11 +55,18 @@ module.exports.destroy = async function (req, res) {
             return res.redirect(req.get('Referer') || '/');
 
         } else {
+
             req.flash('error', 'You are not allowed to delete this post !!');
             return res.redirect('/');
+
         }
     } catch (err) {
         console.error("Error in post deletion:", err);
+        if (req.xhr) {
+            return res.status(500).json({
+                message: "Internal Server Error"
+            });
+        }
         return res.status(500).send("Internal Server Error");
     }
 }

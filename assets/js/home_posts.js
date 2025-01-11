@@ -12,6 +12,7 @@ const createPost = function(){
             success: function(data){
                 let newPost = newPostDOM(data.data.post);
                 $('#posts-list-container>ul').prepend(newPost);
+                toastr['success'](data.message);
             },
             error: function(error){
                 console.error(error.responseText);
@@ -20,7 +21,7 @@ const createPost = function(){
     });
 
     // Method to create a post in DOM
-    let newPostDOM = function(post){
+    const newPostDOM = function(post){
         
         return $(`
             <li id="post-${post._id}">
@@ -58,7 +59,7 @@ const createPost = function(){
 }    
 
 // Attach deletePost to all delete buttons using event delegation
-let deletePost = function() {
+const deletePost = function() {
     $('#posts-list-container').on('click', '.delete-post-button', function(event) {
         event.preventDefault();
 
@@ -68,6 +69,7 @@ let deletePost = function() {
             
             success: function(data){
                 $(`#post-${data.data.post_id}`).remove();
+                toastr['success'](data.message);
             },
             error: function(error){
                 console.error(error.responseText);

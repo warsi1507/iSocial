@@ -14,11 +14,25 @@ module.exports.create = async function(req, res){
             post.comments.push(comment);
             post.save();
 
+            if(req.xhr){
+                return res.status(200).json({
+                    data:{
+                        comment: await comment.populate('user','name'),
+                        post_id: comment.post
+                    },
+                    message: "Comment was Added"
+                })
+            }
             req.flash('success', 'Comment was Added');
             return res.redirect('/')
         }
     } catch (err) {
         console.log('Error in Creating Comment:',err);
+        if (req.xhr) {
+            return res.status(500).json({
+                message: "Internal Server Error"
+            });
+        }
         return res.status(500).send('Internal Server Error')
     }
 }
@@ -32,6 +46,15 @@ module.exports.destroy = async function(req, res){
             await reqComment.deleteOne();
 
             await Post.findByIdAndUpdate(postID, {$pull: {comments: req.params.id}});
+            
+            if(req.xhr){
+                return res.status(200).json({
+                    data: {
+                        comment_id: reqComment.id
+                    },
+                    message:"Comment Deleted"
+                })
+            }
 
             req.flash('success', 'Comment Deleted');
             return res.redirect(req.get('Referer') || '/');

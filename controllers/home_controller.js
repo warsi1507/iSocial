@@ -7,10 +7,11 @@ module.exports.home = async function (req, res) {
             .sort('-createdAt')
             .populate('user')
             .populate({
-                path: 'comments',
-                populate: {
-                    path: 'user'
-                }
+            path: 'comments',
+            populate: {
+                path: 'user'
+            },
+            options: { sort: { 'createdAt': -1 } }
             })
 
         let users = await User.find({})
