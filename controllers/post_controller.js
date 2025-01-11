@@ -6,7 +6,18 @@ module.exports.create = async function(req, res){
         let newPost = await Post.create({
             content: req.body.content,
             user: req.user._id
-        })
+        });
+
+        newPost = await newPost.populate('user');
+
+        if(req.xhr){
+            return res.status(200).json({
+                data:{
+                    post: newPost
+                },
+                message: "POST CREATED !!"
+            });
+        }
     
         req.flash('success', 'Post was Created');
         return res.redirect(req.get('Referer') || '/');
@@ -26,8 +37,18 @@ module.exports.destroy = async function (req, res) {
 
             await Comment.deleteMany({ post: req.params.id });
 
+            if (req.xhr){
+                return res.status(200).json({
+                    data: {
+                        post_id: req.params.id
+                    },
+                    message: "Post Deleted !!"
+                })
+            }
+
             req.flash('success', 'Post Deleted');
             return res.redirect(req.get('Referer') || '/');
+
         } else {
             req.flash('error', 'You are not allowed to delete this post !!');
             return res.redirect('/');

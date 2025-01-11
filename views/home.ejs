@@ -5,7 +5,7 @@
         <h4>Posts</h4>
         <% if (locals.user) { %>
             <h4>Make a Post</h4>
-            <form action="/posts/create" method="post">
+            <form action="/posts/create" method="post" id="new-post-form">
                 <textarea name="content" cols="30" rows="5" placeholder="Type Here..." required></textarea>
                 <input type="submit" value="POST">
             </form>
@@ -32,3 +32,4 @@
     </section>
 
 </div>
+<script src="/js/home_posts.js"></script>
