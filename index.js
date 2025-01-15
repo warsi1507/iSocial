@@ -19,17 +19,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // use sass middleware
-app.use('/css', sassMiddleware)
+app.use('/css', sassMiddleware);
 
 // use static-pages
-app.use(express.static('./assets'))
+app.use(express.static('./assets'));
+
+// make the upload path available for the user
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
 // use static files 
-app.use(expressLayout)
+app.use(expressLayout);
 
 // extract styles and scripts from sub pages into the layouts
-app.set('layout extractStyles', true)
-app.set('layout extractScripts', true)
+app.set('layout extractStyles', true);
+app.set('layout extractScripts', true);
 
 // set up the view engine
 app.set('view engine', 'ejs');

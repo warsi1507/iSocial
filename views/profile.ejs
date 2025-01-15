@@ -1,13 +1,15 @@
     <link rel="stylesheet" href="/css/profile.css">
     <h1>This is Profile | <%= profile_user.name%></h1>
 
-    
+    <img src="<%= profile_user.avatar %>" alt="<%= profile_user.name%>-Avatar" height="80px" width="80px">
     <% if (user.id == profile_user.id) { %>
 
         <!-- id user matches show the form then show the form -->
-        <form action="/users/update/<%= profile_user.id %>" method="post">
+        <form action="/users/update/<%= profile_user.id %>" enctype="multipart/form-data" method="post">
             <input type="text" name="name" placeholder="Your Name" value="<%= profile_user.name %>" required>
             <input type="email" name="email" placeholder="Your Email" value="<%= profile_user.email %>" required>
+
+            <input type="file" name="avatar" placeholder="Profile Picture">
             <input type="submit" value="Update">
         </form>
 
