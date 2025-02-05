@@ -21,38 +21,34 @@ module.exports.index = async function(req, res){
 module.exports.destroy = async function (req, res) {
     try {
         let post = await Post.findById(req.params.id);
-
-        // .id is string(._id)
-        // if (post.user == req.user.id) {
+        if (post.user == req.user.id) {
             await post.deleteOne();
 
             await Comment.deleteMany({ post: req.params.id });
-
-            // if (req.xhr){
                 return res.status(200).json({
-                    // data: {
-                    //     post_id: req.params.id
-                    // },
                     message: "Post Deleted"
                 })
-            // }
+        } else {
 
-            // req.flash('success', 'Post Deleted');
-            // return res.redirect(req.get('Referer') || '/');
+            return res.status(401).json({
+                message:"You can't delete this post!!"
+            })
 
-        // } else {
-
-        //     req.flash('error', 'You are not allowed to delete this post !!');
-        //     return res.redirect('/');
-
-        // }
+        }
     } catch (err) {
-        // console.error("Error in post deletion:", err);
-        // if (req.xhr) {
-            return res.status(500).json({
-                message: "Internal Server Error"
-            });
-        // }
-        // return res.status(500).send("Internal Server Error");
+        return res.status(500).json({
+            message: "Internal Server Error"
+        });
     }
 }
+
+/* I will remove it after sometime
+    - How This Works in a Full Flow
+    - User Logs In → Gets a JWT token.
+    - User Sends a DELETE Request → DELETE /posts/:id with JWT in the header.
+    - JWT is Validated → Passport.js extracts user info from the token.
+    - Check if the Post Belongs to the User:
+        ✅ If Yes → Delete the post & comments.
+        ❌ If No → Return 401 Unauthorized.
+    - Response is Sent to the Client.
+*/
