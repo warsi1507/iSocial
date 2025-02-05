@@ -1,8 +1,8 @@
 const express = require('express');
+const postApi = require('../../../controllers/api/v2/posts_api')
 
 const router = express.Router();
 
-router.use('/v1', require('./v1'));
-router.use('/v2', require('./v2'));
+router.get('/',postApi.index)
 
 module.exports = router
