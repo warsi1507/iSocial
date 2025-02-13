@@ -10,9 +10,10 @@ const flashMiddleware = require('./configs/flash-middleware.js')
 const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./configs/passport-local-strategy.js');
-const passportJWT = require('./configs/passport-jwt-strategy.js')
-const MongoStore = require('connect-mongo');
+const passportJWT = require('./configs/passport-jwt-strategy.js');
+const passportGoogle = require('./configs/passport-google-oauth2-strategy.js');
 
+const MongoStore = require('connect-mongo');
 const app = express();
 const port = 8000;
 
