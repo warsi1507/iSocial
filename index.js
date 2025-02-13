@@ -14,8 +14,9 @@ const passportJWT = require('./configs/passport-jwt-strategy.js');
 const passportGoogle = require('./configs/passport-google-oauth2-strategy.js');
 
 const MongoStore = require('connect-mongo');
+require('dotenv').config();
+
 const app = express();
-const port = 8000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -68,10 +69,10 @@ app.use(flashMiddleware.setFlash);
 // use express router
 app.use('/', require('./routes/index.js'));
 
-app.listen(port, (err)=>{
+app.listen(process.env.PORT, (err)=>{
     if(err){
         console.error(`Error in running the server: ${err}`);
     }
 
-    console.log(`Server is running on port: ${port}`);
+    console.log(`Server is running on port: ${process.env.PORT}`);
 })
