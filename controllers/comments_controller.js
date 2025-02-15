@@ -1,5 +1,6 @@
 const Comment = require('../models/comment');
-const Post = require('../models/post')
+const Post = require('../models/post');
+const commentsMailer = require('../mailers/comments_mailer');
 
 module.exports.create = async function(req, res){
     try {
@@ -12,12 +13,15 @@ module.exports.create = async function(req, res){
             });
 
             post.comments.push(comment);
-            post.save();
+            await post.save();
+            
+            comment = await comment.populate('user', 'name email');
+            commentsMailer.newComment(comment); // send Email Notification
 
             if(req.xhr){
                 return res.status(200).json({
                     data:{
-                        comment: await comment.populate('user','name'),
+                        comment: comment,
                         post_id: comment.post
                     },
                     message: "Comment was Added"
@@ -33,6 +37,7 @@ module.exports.create = async function(req, res){
                 message: "Internal Server Error"
             });
         }
+        req.flash('error', 'Could not add comment. Try again.');
         return res.status(500).send('Internal Server Error')
     }
 }
