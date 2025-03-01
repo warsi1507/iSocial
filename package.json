@@ -22,6 +22,7 @@
   "author": "Samar Warsi",
   "license": "ISC",
   "dependencies": {
+    "bull": "^4.16.5",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^5.1.0",
     "cookie-parser": "^1.4.7",
@@ -30,6 +31,7 @@
     "express": "^4.21.2",
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.18.1",
+    "ioredis": "^5.5.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.2",
     "multer": "^1.4.5-lts.1",
