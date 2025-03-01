@@ -1,10 +1,13 @@
 const User = require('../models/user');
 const fs = require('fs');
-const path = require('path')
+const path = require('path');
+const crypto = require('crypto');
+const queue = require('../configs/bull');
+const userEmailWorker = require('../workers/resetPassword_email_worker');
 
 module.exports.profile = async function (req, res) {
     let user = await User.findById(req.params.id);
-    return res.render('profile', {
+    return res.render('user_profile', {
         title: "Profile",
         profile_user: user
     });
@@ -98,6 +101,94 @@ module.exports.create = async function (req, res) {
     }
 };
 
+// render reset password page without access
+module.exports.resetPassword = function(req, res) {
+    return res.render('reset_password',
+        {
+            title: 'iSocial | Reset Password',
+            access:false
+        }
+    );
+}
+
+// sending reset password mail
+module.exports.resetPassMail = async function(req, res) {
+    try {
+        let user = await User.findOne({ email: req.body.email });
+
+        if(user){
+            if(!user.isTokenValid){
+                user.accessToken = crypto.randomBytes(30).toString('hex');
+                user.isTokenValid = true;
+                await user.save();
+            }
+
+            await queue.add('user_rePass_emails', user, {
+                attempts: 3,
+                backoff: 5000
+            });
+
+            req.flash('success', 'Password reset link sent. Please check your mail');
+            return res.redirect('/');
+        }
+        else{
+            req.flash('error', 'User with that email-id doesn\'t exists');
+            return res.redirect(req.get('Referer') || '/');
+        }
+    } catch (err) {
+        console.error("Error in Resetting Password:", err);
+        return res.status(500).send("Internal Server Error");
+    }
+}
+
+// render reset password page with access
+module.exports.setPassword = async function(req, res){
+    try {
+        let user = await User.findOne({accessToken: req.params.accessToken});
+        if(user.isTokenValid)
+        {
+            return res.render('reset_password',
+            {
+                title: 'Codeial | Reset Password',
+                access: true,
+                accessToken: req.params.accessToken
+            });
+        }
+        else
+        {
+            req.flash('error', 'Link expired');
+            return res.redirect('/users/reset-password');
+        }
+    } catch (err) {
+        console.error("Error in Resetting Password:", err);
+        return res.status(500).send("Internal Server Error");
+    }
+}
+
+// setting new password
+module.exports.updatePassword = async function(req, res) {
+    try {
+        let user = await User.findOne({ accessToken: req.params.accessToken });
+        if (user.isTokenValid) {
+            if (req.body.newPass === req.body.confirmPass) {
+                user.password = req.body.newPass;
+                user.isTokenValid = false;
+                await user.save();
+                req.flash('success', "Password updated. Login now!");
+                return res.redirect('/users/sign-in');
+            } else {
+                req.flash('error', "Passwords don't match");
+                return res.redirect(req.get('Referer') || '/');
+            }
+        } else {
+            req.flash('error', 'Link expired');
+            return res.redirect('/users/reset-password');
+        }
+    } catch (err) {
+        console.error("Error in Resetting Password:", err);
+        return res.status(500).send("Internal Server Error");
+    }
+}
 
 // Sign in and create a session
 module.exports.createSession = function (req, res) {

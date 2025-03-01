@@ -19,14 +19,10 @@ module.exports.create = async function(req, res){
             comment = await comment.populate('user', 'name email');
             
             // adding job of sending email to redis Queue (Jobs_Q)
-            await queue.add('emails', comment, {
+            await queue.add('comment_emails', comment, {
                 attempts: 3,
                 backoff: 5000
-            }).then((job) => {
-                console.log(`✅ Job added: ID = ${job.id}, Data =`, job.data);
-            }).catch((err) => {
-                console.error("🚨 Error adding job to queue:", err);
-            });
+            })
 
             if(req.xhr){
                 return res.status(200).json({

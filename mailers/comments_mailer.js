@@ -18,7 +18,6 @@ exports.newComment = async (comment) => {
                 html: emailHTML
             }
         )
-        console.log('Email Send !!');
     } catch (err) {
         console.error('Error in sending mail:', err);
     }
