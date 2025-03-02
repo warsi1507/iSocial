@@ -1,28 +1,57 @@
-const createPost = function(){
-    const newPostForm = $('#new-post-form');
-    
-    newPostForm.submit(function(event){
-        event.preventDefault();
-        
-        $.ajax({
-            type: 'post',
-            url: '/posts/create',
-            data: newPostForm.serialize(), // form data is created to JSON
+const PostHandler = {
+    init: function() {
+        this.bindEvents();
+    },
 
-            success: function(data){
-                let newPost = newPostDOM(data.data.post);
-                $('#posts-list-container>ul').prepend(newPost);
-                toastr['success'](data.message);
+    bindEvents: function() {
+        $(document)
+            .on('submit', '#new-post-form', this.createPost)
+            .on('click', '.delete-post-button', this.deletePost);
+    },
+
+    createPost: function(event) {
+        event.preventDefault();
+
+        let newPostForm = $(this);
+
+        $.ajax({
+            type: 'POST',
+            url: '/posts/create',
+            data: newPostForm.serialize(),
+            success: function(response) {
+                let newPost = PostHandler.generatePostHTML(response.data.post);
+                $('#posts-list-container > ul').prepend(newPost);
+                newPostForm[0].reset();
+                toastr['success'](response.message || 'Post created successfully.');
             },
-            error: function(error){
-                console.error(error.responseText);
+            error: function(xhr) {
+                console.error(xhr.responseText);
+                toastr['error']('An error occurred while creating the post.');
             }
         });
-    });
+    },
 
-    // Method to create a post in DOM
-    const newPostDOM = function(post){
-        
+    deletePost: function(event) {
+        event.preventDefault();
+
+        let deleteButton = $(this);
+        let url = deleteButton.attr('href');
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(response) {
+                $(`#post-${response.data.post_id}`).remove();
+                toastr['success'](response.message || 'Post deleted successfully.');
+            },
+            error: function(xhr) {
+                console.error(xhr.responseText);
+                toastr['error']('An error occurred while deleting the post.');
+            }
+        });
+    },
+
+    generatePostHTML: function(post) {
         return $(`
             <li id="post-${post._id}">
                 <p>
@@ -30,53 +59,33 @@ const createPost = function(){
                         <a href="/posts/destroy/${post._id}" class="delete-post-button"> X </a>
                     </small>
 
+                    <small>${post.user.name}</small>
+                    <br><br>
                     <small>
-                        ${post.user.name}
+                        <a class="toggle-like-button" data-likes="0" href="/likes/toggle/?id=${post._id}&type=Post">
+                            0 Likes
+                        </a>
                     </small>
-                    <br>
-
                     ${post.content}
                 </p>
 
                 <div class="post-comments">
-                    <form action="/comments/create" method="post">
-                        <input type="text" name="content" placeholder="Type Here to add comments..." required>
+                    <form action="/comments/create" method="post" class="new-comment-form">
+                        <input type="text" name="content" placeholder="Type here to add comments..." required>
                         <input type="hidden" name="post" value="${post._id}">
                         <input type="submit" value="Add Comment">
                     </form>
 
                     <div class="post-comments-list">
-                        <ul id="post-comments-${post._id}">
-    
-                        </ul>
+                        <ul id="post-comments-${post._id}"></ul>
                     </div>
                 </div>
             </li>
-        `)
+        `);
     }
+};
 
-    
-}    
-
-// Attach deletePost to all delete buttons using event delegation
-const deletePost = function() {
-    $('#posts-list-container').on('click', '.delete-post-button', function(event) {
-        event.preventDefault();
-
-        $.ajax({
-            type: 'get',
-            url: $(this).prop('href'),
-            
-            success: function(data){
-                $(`#post-${data.data.post_id}`).remove();
-                toastr['success'](data.message);
-            },
-            error: function(error){
-                console.error(error.responseText);
-            }
-        });
-    });
-}
-
-createPost();
-deletePost();
+// Initialize PostHandler on document ready
+$(function() {
+    PostHandler.init();
+});
