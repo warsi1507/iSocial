@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "A social media web application to learn Node, MongoDB and Express",
   "main": "index.js",
-  "scripts": {
+"scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./index.js",
-    "dev": "nodemon ./index.js"
+    "dev": "nodemon ./index.js",
+    "build:css": "tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --watch"
   },
   "keywords": [
     "MERN",
@@ -44,6 +45,8 @@
     "toastr": "^2.1.4"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "@tailwindcss/cli": "^4.0.9",
+    "nodemon": "^3.1.9",
+    "tailwindcss": "^4.0.9"
   }
 }

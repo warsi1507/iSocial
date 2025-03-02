@@ -2,7 +2,6 @@ const express = require('express');
 const expressLayout = require('express-ejs-layouts');
 const db = require('./configs/mongoose.js');
 const cookieParser = require('cookie-parser');
-const sassMiddleware = require('./configs/sass-middleware.js');
 const flash = require('connect-flash');
 const flashMiddleware = require('./configs/flash-middleware.js')
 
@@ -20,9 +19,6 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
-// use sass middleware
-app.use('/css', sassMiddleware);
 
 // use static-pages
 app.use(express.static('./assets'));

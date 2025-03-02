@@ -6,42 +6,33 @@
     <title>
         <%= title %>
     </title>
-    <link rel="stylesheet" href="/css/layout.css">
-    <link rel="stylesheet" href="/css/header.css">
-    <link rel="stylesheet" href="/css/footer.css">\
     
-    <%- style %>
-    
-    <!-- Toastr CSS and JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
-    <link rel="shortcut icon" href="/images/iSocial-favicon.png" type="image/x-icon">
+    <link href="/css/output.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Header Include -->
     <%- include('_header'); %>
 
-    <!-- Flash Message Handling -->
     <script>
-        // Set global Toastr options
         toastr.options = {
-            "closeButton": true,               // Show close button
-            "debug": false,                    // Debug mode
-            "newestOnTop": true,               // New messages appear on top
-            "progressBar": true,               // Show progress bar
-            "positionClass": "toast-top-right", // Positioning: top-right, bottom-right, etc.
-            "preventDuplicates": true,         // Prevent duplicate messages
-            "onclick": null,                   // Callback on click
-            "showDuration": "300",             // Show animation duration (ms)
-            "hideDuration": "1000",            // Hide animation duration (ms)
-            "timeOut": "5000",                 // Auto-hide time (ms)
-            "extendedTimeOut": "1000",         // Extra time on hover (ms)
-            "showEasing": "swing",             // Easing function for show animation
-            "hideEasing": "linear",            // Easing function for hide animation
-            "showMethod": "fadeIn",            // Animation method for showing
-            "hideMethod": "fadeOut"            // Animation method for hiding
+            "closeButton": true,              
+            "debug": false,                    
+            "newestOnTop": true,               
+            "progressBar": true,               
+            "positionClass": "toast-top-right",
+            "preventDuplicates": true,        
+            "onclick": null,                   
+            "showDuration": "300",             
+            "hideDuration": "1000",            
+            "timeOut": "5000",               
+            "extendedTimeOut": "1000",         
+            "showEasing": "swing",             
+            "hideEasing": "linear",           
+            "showMethod": "fadeIn",            
+            "hideMethod": "fadeOut"           
         };
 
     </script>
@@ -58,15 +49,12 @@
         </script>
     <% } %>
 
-    <!-- Main Content -->
     <main id="layout-main">
         <%- body %>
     </main>
 
-    <!-- Footer Include -->
     <%- include('_footer'); %>
 
-    <!-- Additional Scripts -->
     <%- script %>
 </body>
 </html>

@@ -1,27 +1,29 @@
-<header>
-    <div id="logo-container">
-        <a href="/"><img src="/images/iSocial-logo.png" alt="__company-logo__" id="headerLogo"></a>
-    </div>
+<header class="bg-gray-800 text-white py-4 px-6 shadow-md">
+    <div class="container mx-auto flex items-center justify-between">
+        <!-- Logo Section -->
+        <div>
+            <a href="/">
+                <img src="/images/iSocial-logo.png" alt="__company-logo__" id="headerLogo" class="h-10">
+            </a>
+        </div>
 
-    <div id="buttons-container">
-        <% if (locals.user) { %>
-
-            <div id="user-profile-button">
-                <a href="/users/profile/<%= user.id %>"><%= user.name %></a>
-            </div>
-            <div>
-                <a href="/users/sign-out">SIGN OUT</a>
-            </div>
-        
-        <% } else { %>
-            
-            <div>
-                <a href="/users/sign-in">SIGN IN</a>
-            </div>
-            <div>
-                <a href="/users/sign-up">SIGN UP</a>
-            </div>
-        
-        <% } %>
+        <!-- Navigation Buttons -->
+        <div class="flex items-center space-x-6">
+            <% if (locals.user) { %>
+                <a href="/users/profile/<%= user.id %>" class="text-gray-300 hover:text-white transition-colors duration-300">
+                    <%= user.name %>
+                </a>
+                <a href="/users/sign-out" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition duration-300">
+                    SIGN OUT
+                </a>
+            <% } else { %>
+                <a href="/users/sign-in" class="text-gray-300 hover:text-white transition-colors duration-300">
+                    SIGN IN
+                </a>
+                <a href="/users/sign-up" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300">
+                    SIGN UP
+                </a>
+            <% } %>
+        </div>
     </div>
 </header>
