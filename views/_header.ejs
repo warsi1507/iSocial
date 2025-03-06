@@ -1,29 +1,71 @@
-<header class="bg-gray-800 text-white py-4 px-6 shadow-md">
+<header class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white py-3 px-4 md:py-4 md:px-6 shadow-lg sticky top-0 z-50">
     <div class="container mx-auto flex items-center justify-between">
         <!-- Logo Section -->
-        <div>
-            <a href="/">
-                <img src="/images/iSocial-logo.png" alt="__company-logo__" id="headerLogo" class="h-10">
+        <div class="flex items-center">
+            <a href="/" class="flex items-center">
+                <img src="/images/iSocial-logo-BnW.png" alt="iSocial" id="headerLogo" class="h-8 md:h-10 transition-transform duration-300 hover:scale-105">
             </a>
         </div>
 
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+        </button>
+
         <!-- Navigation Buttons -->
-        <div class="flex items-center space-x-6">
+        <div id="nav-links" class="hidden md:flex items-center space-x-6">
             <% if (locals.user) { %>
-                <a href="/users/profile/<%= user.id %>" class="text-gray-300 hover:text-white transition-colors duration-300">
+                <a href="/users/profile/<%= user.id %>" class="flex items-center text-white font-medium hover:text-blue-100 transition-colors duration-300">
+                    <i class="far fa-user mr-2"></i>
                     <%= user.name %>
                 </a>
-                <a href="/users/sign-out" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition duration-300">
+                <a href="/users/sign-out" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition duration-300 flex items-center">
+                    <i class="fas fa-sign-out-alt mr-2"></i>
                     SIGN OUT
                 </a>
             <% } else { %>
-                <a href="/users/sign-in" class="text-gray-300 hover:text-white transition-colors duration-300">
+                <a href="/users/sign-in" class="text-white font-medium hover:text-blue-100 transition-colors duration-300 flex items-center">
+                    <i class="fas fa-sign-in-alt mr-2"></i>
                     SIGN IN
                 </a>
-                <a href="/users/sign-up" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300">
+                <a href="/users/sign-up" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg transition duration-300 flex items-center">
+                    <i class="fas fa-user-plus mr-2"></i>
                     SIGN UP
                 </a>
             <% } %>
         </div>
     </div>
+
+    <!-- Mobile Menu (Hidden by Default) -->
+    <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2">
+        <div class="flex flex-col space-y-3">
+            <% if (locals.user) { %>
+                <a href="/users/profile/<%= user.id %>" class="flex items-center text-white font-medium hover:text-blue-100 transition-colors duration-300 py-2">
+                    <i class="far fa-user mr-2"></i>
+                    <%= user.name %>
+                </a>
+                <a href="/users/sign-out" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition duration-300 flex items-center justify-center">
+                    <i class="fas fa-sign-out-alt mr-2"></i>
+                    SIGN OUT
+                </a>
+            <% } else { %>
+                <a href="/users/sign-in" class="text-white font-medium hover:text-blue-100 transition-colors duration-300 py-2 flex items-center">
+                    <i class="fas fa-sign-in-alt mr-2"></i>
+                    SIGN IN
+                </a>
+                <a href="/users/sign-up" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg transition duration-300 flex items-center justify-center">
+                    <i class="fas fa-user-plus mr-2"></i>
+                    SIGN UP
+                </a>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
 </header>

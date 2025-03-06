@@ -1,40 +1,68 @@
-<li id="post-<%= post._id %>">
-    <p>
+<li id="post-<%= post._id %>" class="bg-white rounded-lg shadow p-4 mb-6 transition-all duration-300 hover:shadow-md">
+    <div class="flex items-start justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 flex items-center justify-center text-white font-bold">
+                <%= post.user.name.charAt(0).toUpperCase() %>
+            </div>
+            <div>
+                <h3 class="font-medium text-gray-800"><%= post.user.name %></h3>
+                <p class="text-xs text-gray-500">Posted just now</p>
+            </div>
+        </div>
+        
         <% if (locals.user && locals.user.id === post.user.id) { %>
-            <small>
-                <a href="/posts/destroy/<%= post._id %>" class="delete-post-button"> X </a>
-            </small>
+            <button class="delete-post-button text-gray-400 hover:text-red-500 transition-colors duration-300" data-id="<%= post._id %>">
+                <i class="fas fa-trash-alt"></i>
+            </button>
         <% } %>
+    </div>
 
-        <small>
-            <%= post.user.name %>
-        </small>
-        <br>
-        <%= post.content %>
-        <br>
-        <small>
+    <div class="mt-3 text-gray-700">
+        <p><%= post.content %></p>
+    </div>
+
+    <div class="mt-4 flex items-center justify-between border-t border-b border-gray-100 py-2">
+        <div class="flex items-center space-x-4">
             <% if(locals.user) { %>
-                <a class="toggle-like-button" data-likes="<%= post.likes.length %>" href="/likes/toggle/?id=<%=post._id%>&type=Post">
-                    <%= post.likes.length %> Likes
+                <a class="toggle-like-button flex items-center text-gray-500 hover:text-blue-500 transition-colors duration-300 px-2 py-1 rounded-md" 
+                   data-likes="<%= post.likes.length %>" 
+                   href="/likes/toggle/?id=<%=post._id%>&type=Post">
+                    <i class="far fa-heart mr-1"></i>
+                    <span><%= post.likes.length %> Likes</span>
                 </a>
             <% } else { %>
-                <%= post.likes.length %> Likes
+                <span class="flex items-center text-gray-500 px-2 py-1">
+                    <i class="far fa-heart mr-1"></i>
+                    <%= post.likes.length %> Likes
+                </span>
             <% } %>
-        </small>
-    </p>
+            
+            <button class="flex items-center text-gray-500 hover:text-blue-500 transition-colors duration-300 px-2 py-1 rounded-md comment-toggle">
+                <i class="far fa-comment mr-1"></i>
+                <span><%= post.comments.length %> Comments</span>
+            </button>
+        </div>
+        
+        <button class="text-gray-500 hover:text-blue-500 transition-colors duration-300 px-2 py-1 rounded-md">
+            <i class="fas fa-share-alt"></i>
+        </button>
+    </div>
 
-    <div class="post-comments">
+    <div class="post-comments mt-4">
         <% if (locals.user) { %>
-            <form action="/comments/create" method="post" id="new-comment-form-<%=post._id%>">
-                <input type="text" name="content" placeholder="Type Here to add comments..." required>
+            <form action="/comments/create" method="post" id="new-comment-form-<%=post._id%>" class="mb-4 flex">
+                <input type="text" name="content" placeholder="Write a comment..." required
+                       class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent">
                 <input type="hidden" name="post" value="<%= post._id %>">
-                <input type="submit" value="Add Comment">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-r-lg transition duration-300">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
             </form>
         <% } %>
 
-        <div id="post-comments-list">
+        <div id="post-comments-list" class="mt-2">
             <ul id="post-comments-<%= post._id %>">
-                <% for(comment of post.comments ) { %>
+                <% for(comment of post.comments) { %>
                     <%- include('_comments') -%>
                 <% } %>
             </ul>

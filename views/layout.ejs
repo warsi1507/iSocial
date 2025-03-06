@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%= title %>
-    </title>
+    <title><%= title %></title>
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="/css/output.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen flex flex-col">
     <%- include('_header'); %>
 
     <script>
@@ -34,7 +32,6 @@
             "showMethod": "fadeIn",            
             "hideMethod": "fadeOut"           
         };
-
     </script>
 
     <% if (flash && flash.success && flash.success.length > 0) { %>
@@ -49,7 +46,7 @@
         </script>
     <% } %>
 
-    <main id="layout-main">
+    <main id="layout-main" class="flex-grow py-6 px-4 md:px-8 lg:px-12">
         <%- body %>
     </main>
 

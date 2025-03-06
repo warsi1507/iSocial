@@ -1,21 +1,95 @@
-    <h1>This is Profile | <%= profile_user.name%></h1>
-
-    <img src="<%= profile_user.avatar %>" alt="<%= profile_user.name%>-Avatar" height="80px" width="80px">
-    <% if (user.id == profile_user.id) { %>
-
-        <!-- id user matches show the form then show the form -->
-        <form action="/users/update/<%= profile_user.id %>" enctype="multipart/form-data" method="post">
-            <input type="text" name="name" placeholder="Your Name" value="<%= profile_user.name %>" required>
-            <input type="email" name="email" placeholder="Your Email" value="<%= profile_user.email %>" required>
-
-            <input type="file" name="avatar" placeholder="Profile Picture">
-            <input type="submit" value="Update">
-        </form>
-
-    <% } else { %>
-
-        <!-- else show only the profile info -->
-        <p><%= profile_user.name %></p>
-        <p><%= profile_user.email %></p>
-
-    <% } %>
+<!-- user_profile.ejs -->
+<div class="min-h-screen bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+      <!-- Profile Header -->
+      <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <!-- Cover Image -->
+        <div class="h-32 bg-gradient-to-r from-cyan-400 to-blue-500"></div>
+        
+        <div class="relative px-6 pb-6">
+          <!-- Avatar -->
+          <div class="absolute -top-16 flex justify-center">
+            <div class="relative">
+              <img 
+                src="<%= profile_user.avatar %>" 
+                alt="<%= profile_user.name%>'s avatar" 
+                class="h-32 w-32 rounded-full border-4 border-white object-cover shadow-md"
+              >
+              <% if (user.id == profile_user.id) { %>
+                <label for="avatar-upload" class="absolute bottom-0 right-0 h-10 w-10 bg-cyan-500 hover:bg-cyan-600 rounded-full flex items-center justify-center cursor-pointer shadow-md transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </label>
+              <% } %>
+            </div>
+          </div>
+          
+          <!-- Profile Info -->
+          <div class="mt-16 pt-4">
+            <h1 class="text-3xl font-bold text-gray-800"><%= profile_user.name%></h1>
+            
+            <!-- User's own profile -->
+            <% if (user.id == profile_user.id) { %>
+              <form action="/users/update/<%= profile_user.id %>" enctype="multipart/form-data" method="post" class="mt-6 space-y-4">
+                <input id="avatar-upload" type="file" name="avatar" class="hidden">
+                
+                <div>
+                  <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                  <input 
+                    type="text" 
+                    id="name"
+                    name="name" 
+                    placeholder="Your Name" 
+                    value="<%= profile_user.name %>" 
+                    required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"
+                  >
+                </div>
+                
+                <div>
+                  <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                  <input 
+                    type="email" 
+                    id="email"
+                    name="email" 
+                    placeholder="Your Email" 
+                    value="<%= profile_user.email %>" 
+                    required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"
+                  >
+                </div>
+                
+                <div class="flex justify-end">
+                  <button 
+                    type="submit"
+                    class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transition-colors"
+                  >
+                    Update Profile
+                  </button>
+                </div>
+              </form>
+            <!-- Other user's profile --> 
+            <% } else { %>
+              <div class="mt-4 space-y-3">
+                <p class="text-lg text-gray-600">
+                  <span class="inline-block w-20 font-medium">Email:</span>
+                  <%= profile_user.email %>
+                </p>
+                <!-- You can add more profile details here -->
+                <div class="mt-6">
+                  <button class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                    Connect
+                  </button>
+                  <button class="ml-3 px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-blue-600 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                    Message
+                  </button>
+                </div>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,25 +1,39 @@
-<li id="comment-<%= comment._id %>">
-    <p>
+<li id="comment-<%= comment._id %>" class="bg-white rounded-lg shadow-sm p-3 mb-3 transition-all duration-300 hover:shadow-md">
+    <div class="flex items-start justify-between">
+        <div class="flex items-start space-x-2">
+            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-500">
+                <%= comment.user.name.charAt(0).toUpperCase() %>
+            </div>
+            <div>
+                <p class="font-medium text-gray-700"><%= comment.user.name %></p>
+                <p class="mt-1 text-gray-600"><%= comment.content %></p>
+            </div>
+        </div>
+        
         <% if (locals.user && (locals.user.id === comment.user.id || locals.user.id === post.user.id)) { %>
-            <small>
-                <a href="/comments/destroy/<%= comment.id %>" class="delete-comment-button"> X </a>
-            </small>
+            <button class="delete-comment-button text-gray-400 hover:text-red-500 transition-colors duration-300" data-id="<%= comment.id %>">
+                <i class="fas fa-trash-alt"></i>
+            </button>
         <% } %>
+    </div>
     
-        <%= comment.content %>
-        <br>
-        <small>
-            <%= comment.user.name %>
-        </small>
-        <br>
-        <small>
+    <div class="mt-3 flex items-center text-sm text-gray-500">
+        <div class="flex items-center">
             <% if(locals.user) { %>
-                <a class="toggle-like-button" data-likes="<%= comment.likes.length %>" href="/likes/toggle/?id=<%=comment._id%>&type=Comment">
-                    <%= comment.likes.length %> Likes
+                <a class="toggle-like-button flex items-center text-gray-500 hover:text-blue-500 transition-colors duration-300" 
+                   data-likes="<%= comment.likes.length %>" 
+                   href="/likes/toggle/?id=<%=comment._id%>&type=Comment">
+                    <i class="far fa-heart mr-1"></i>
+                    <span><%= comment.likes.length %></span>
                 </a>
             <% } else { %>
-                <%= comment.likes.length %> Likes
+                <span class="flex items-center">
+                    <i class="far fa-heart mr-1"></i>
+                    <%= comment.likes.length %>
+                </span>
             <% } %>
-        </small>
-    </p>
+        </div>
+        
+        <span class="text-xs text-gray-400 ml-3">• just now</span>
+    </div>
 </li>
