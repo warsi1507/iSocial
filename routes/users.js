@@ -34,4 +34,7 @@ router.post('/send-reset-pass-mail', usersController.resetPassMail);
 router.get('/reset-password/:accessToken', usersController.setPassword);
 router.post('/update-password/:accessToken', usersController.updatePassword);
 
+router.post('/block-user', usersController.blockUser);
+router.post('/unblock-user', usersController.unblockUser);
+
 module.exports = router;

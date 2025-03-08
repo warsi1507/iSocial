@@ -207,3 +207,57 @@ module.exports.destroySession = function (req, res){
         return res.redirect('/'); // Redirect after successful logout
     });
 }
+
+module.exports.blockUser = async function (req, res) {
+    try {
+        if (!req.query.id || !req.user._id) {
+            return res.status(400).json({ message: 'Invalid request parameters' });
+        }
+        let userToBlock = await User.findById(req.query.id);
+        let currentUser = await User.findById(req.user._id);
+
+        if (!userToBlock) {
+            return res.status(400).json({ message: 'User not found' });
+        }
+
+        if (currentUser.blockedUsers.includes(userToBlock._id)) {
+            return res.status(400).json({ message: 'User already blocked' });
+        }
+
+        currentUser.blockedUsers.push(userToBlock._id);
+        await currentUser.save();
+
+        req.flash('success', 'User blocked successfully');
+        return res.status(200).json({ message: 'User blocked successfully' });
+
+    } catch (err) {
+        return res.status(500).json({ message: 'Internal server error', error: err.message });
+    }
+};
+
+module.exports.unblockUser = async function (req, res) {
+    try {
+        if (!req.query.id || !req.user._id) {
+            return res.status(400).json({ message: 'Invalid request parameters' });
+        }
+        let userToUnblock = await User.findById(req.query.id);
+        let currentUser = await User.findById(req.user._id);
+
+        if (!userToUnblock) {
+            return res.status(400).json({ message: 'User not found' });
+        }
+
+        if (!currentUser.blockedUsers.includes(userToUnblock._id)) {
+            return res.status(400).json({ message: 'User is not blocked' });
+        }
+
+        currentUser.blockedUsers = currentUser.blockedUsers.filter(userId => userId.toString() !== userToUnblock._id.toString());
+        await currentUser.save();
+
+        req.flash('success', 'User unblocked successfully');
+        return res.status(200).json({ message: 'User unblocked successfully' });
+
+    } catch (err) {
+        return res.status(500).json({ message: 'Internal server error', error: err.message });
+    }
+};

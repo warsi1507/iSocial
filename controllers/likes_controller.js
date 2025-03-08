@@ -14,14 +14,12 @@ module.exports.toggleLike = async function(req, res) {
             likeable = await Comment.findById(req.query.id).populate('likes');
         }
 
-        // check if a like already exists
         let existingLike = await Like.findOne({
             likeable: req.query.id,
             onModel: req.query.type,
             user: req.user._id
         });
 
-        // if a like already exists
         if(existingLike) {
             likeable.likes.pull(existingLike._id);
             await likeable.save();
@@ -29,7 +27,6 @@ module.exports.toggleLike = async function(req, res) {
             await existingLike.deleteOne();
             deleted = true;
         } else {
-            // else make a new like
             let newLike = await Like.create({
                 user: req.user._id,
                 likeable: req.query.id,
@@ -41,9 +38,6 @@ module.exports.toggleLike = async function(req, res) {
         }
 
         if(req.xhr){
-            //////////
-            console.log("Here in XHR");
-            
             return res.status(200).json({
                 message: 'Request Successful',
                 data: {
@@ -52,7 +46,6 @@ module.exports.toggleLike = async function(req, res) {
             });
         }
         
-        console.log("Here NOT in XHR");
         return res.status(200).redirect(req.get('Referer') || '/');
 
     } catch (err) {

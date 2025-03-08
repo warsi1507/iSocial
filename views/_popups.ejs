@@ -1,0 +1,70 @@
+<!-- Unfriend Confirmation Modal -->
+<div id="unfriend-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6 mx-4">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Unfriend Confirmation</h3>
+        <p class="text-gray-600 mb-6">Are you sure you want to unfriend <span id="unfriend-user-name" class="font-medium"></span>?</p>
+        
+        <div class="flex justify-end space-x-3">
+            <button id="cancel-unfriend" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition duration-300">
+                Cancel
+            </button>
+            <button id="confirm-unfriend" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-300">
+                Unfriend
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Reject Friend Request Modal -->
+<div id="reject-request-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6 mx-4">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Reject Friend Request</h3>
+        <p class="text-gray-600 mb-6">How would you like to respond to <span id="reject-user-name" class="font-medium"></span>'s friend request?</p>
+        
+        <div class="flex justify-end space-x-3">
+            <button id="cancel-reject" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition duration-300">
+                Cancel
+            </button>
+            <button id="confirm-reject" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition duration-300">
+                Reject
+            </button>
+            <button id="reject-and-block" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-300">
+                Reject & Block
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Block User Modal -->
+<div id="block-user-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6 mx-4">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Block User Confirmation</h3>
+        <p class="text-gray-600 mb-6">Are you sure you want to block <span id="block-user-name" class="font-medium"></span>? They won't be able to see your posts or contact you.</p>
+        
+        <div class="flex justify-end space-x-3">
+            <button id="cancel-block" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition duration-300">
+                Cancel
+            </button>
+            <button id="confirm-block" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-300">
+                Block User
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Unblock User Modal -->
+<div id="unblock-user-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6 mx-4">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Unblock User Confirmation</h3>
+        <p class="text-gray-600 mb-6">Are you sure you want to unblock <span id="unblock-user-name" class="font-medium"></span>? They will be able to see your posts and send you friend requests.</p>
+        
+        <div class="flex justify-end space-x-3">
+            <button id="cancel-unblock" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition duration-300">
+                Cancel
+            </button>
+            <button id="confirm-unblock" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300">
+                Unblock User
+            </button>
+        </div>
+    </div>
+</div>

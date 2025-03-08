@@ -1,95 +1,181 @@
-<!-- user_profile.ejs -->
-<div class="min-h-screen bg-gray-50">
-    <div class="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-      <!-- Profile Header -->
-      <div class="bg-white rounded-xl shadow-md overflow-hidden">
-        <!-- Cover Image -->
-        <div class="h-32 bg-gradient-to-r from-cyan-400 to-blue-500"></div>
-        
-        <div class="relative px-6 pb-6">
-          <!-- Avatar -->
-          <div class="absolute -top-16 flex justify-center">
-            <div class="relative">
+<!-- user_profile.ejs - Combined Template -->
+<div class="container min-h-screen bg-gray-50 mx-auto px-4 py-8 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Profile Header -->
+    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
+      <!-- Cover Image -->
+      <div class="bg-gradient-to-r from-blue-500 to-cyan-500 h-32 relative"></div>
+      
+      <div class="relative px-6 pb-6">
+        <!-- Avatar -->
+        <div class="absolute -top-16 left-6 flex items-end">
+          <div class="relative">
+            <% if (profile_user.avatar) { %>
               <img 
                 src="<%= profile_user.avatar %>" 
-                alt="<%= profile_user.name%>'s avatar" 
+                alt="<%= profile_user.name %>'s avatar" 
                 class="h-32 w-32 rounded-full border-4 border-white object-cover shadow-md"
               >
-              <% if (user.id == profile_user.id) { %>
-                <label for="avatar-upload" class="absolute bottom-0 right-0 h-10 w-10 bg-cyan-500 hover:bg-cyan-600 rounded-full flex items-center justify-center cursor-pointer shadow-md transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                </label>
-              <% } %>
-            </div>
-          </div>
-          
-          <!-- Profile Info -->
-          <div class="mt-16 pt-4">
-            <h1 class="text-3xl font-bold text-gray-800"><%= profile_user.name%></h1>
-            
-            <!-- User's own profile -->
-            <% if (user.id == profile_user.id) { %>
-              <form action="/users/update/<%= profile_user.id %>" enctype="multipart/form-data" method="post" class="mt-6 space-y-4">
-                <input id="avatar-upload" type="file" name="avatar" class="hidden">
-                
-                <div>
-                  <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                  <input 
-                    type="text" 
-                    id="name"
-                    name="name" 
-                    placeholder="Your Name" 
-                    value="<%= profile_user.name %>" 
-                    required
-                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"
-                  >
-                </div>
-                
-                <div>
-                  <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                  <input 
-                    type="email" 
-                    id="email"
-                    name="email" 
-                    placeholder="Your Email" 
-                    value="<%= profile_user.email %>" 
-                    required
-                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"
-                  >
-                </div>
-                
-                <div class="flex justify-end">
-                  <button 
-                    type="submit"
-                    class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transition-colors"
-                  >
-                    Update Profile
-                  </button>
-                </div>
-              </form>
-            <!-- Other user's profile --> 
             <% } else { %>
-              <div class="mt-4 space-y-3">
-                <p class="text-lg text-gray-600">
-                  <span class="inline-block w-20 font-medium">Email:</span>
-                  <%= profile_user.email %>
-                </p>
-                <!-- You can add more profile details here -->
-                <div class="mt-6">
+              <div class="h-32 w-32 rounded-full border-4 border-white bg-gradient-to-r from-blue-400 to-cyan-400 flex items-center justify-center text-white text-3xl font-bold shadow-md">
+                <%= profile_user.name.charAt(0).toUpperCase() %>
+              </div>
+            <% } %>
+            
+            <% if (user.id == profile_user.id) { %>
+              <label for="avatar-upload" class="absolute bottom-0 right-0 h-10 w-10 bg-cyan-500 hover:bg-cyan-600 rounded-full flex items-center justify-center cursor-pointer shadow-md transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </label>
+            <% } %>
+          </div>
+        </div>
+        
+        <!-- Profile Info -->
+        <div class="mt-16 pt-4">
+          <div class="flex justify-between items-start">
+            <div>
+              <h1 class="text-2xl font-bold text-gray-800"><%= profile_user.name %></h1>
+              <p class="text-gray-600"><%= profile_user.email %></p>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="flex space-x-2">
+              <!-- User's own profile -->
+              <% if (user.id == profile_user.id) { %>
+                <a href="/users/update/<%= profile_user.id %>" class="bg-cyan-600 text-white px-4 py-2 rounded-md hover:bg-cyan-700 transition duration-300 shadow-sm flex items-center">
+                  <i class="fas fa-edit mr-2"></i>
+                  Edit Profile
+                </a>
+              <!-- Other user's profile --> 
+              <% } else { %>
+                <% if (typeof isFriend !== 'undefined') { %>
+                  <% if (isFriend) { %>
+                    <button class="unfriend-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition duration-300 shadow-sm flex items-center"
+                            data-friend-id="<%= profile_user.id %>"
+                            data-friend-name="<%= profile_user.name %>">
+                      <i class="fas fa-user-minus mr-2"></i>
+                      Unfriend
+                    </button>
+                  <% } else if (hasSentRequest) { %>
+                    <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md transition duration-300 shadow-sm flex items-center" disabled>
+                      <i class="fas fa-clock mr-2"></i>
+                      Request Sent
+                    </button>
+                  <% } else if (hasReceivedRequest) { %>
+                    <button class="accept-friend-request bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 shadow-sm flex items-center"
+                            data-request-id="<%= friendRequestId %>">
+                      <i class="fas fa-user-check mr-2"></i>
+                      Accept Request
+                    </button>
+                  <% } else if (!isBlocked && !isBlockedBy) { %>
+                    <button class="send-friend-request bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 shadow-sm flex items-center"
+                            data-user-id="<%= profile_user.id %>">
+                      <i class="fas fa-user-plus mr-2"></i>
+                      Add Friend
+                    </button>
+                  <% } %>
+                  
+                  <% if (!isBlocked && !isBlockedBy) { %>
+                    <button class="block-user-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition duration-300 shadow-sm flex items-center"
+                            data-user-id="<%= profile_user.id %>"
+                            data-user-name="<%= profile_user.name %>">
+                      <i class="fas fa-ban mr-2"></i>
+                      Block
+                    </button>
+                  <% } else if (isBlocked) { %>
+                    <button class="unblock-user-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition duration-300 shadow-sm flex items-center"
+                            data-user-id="<%= profile_user.id %>"
+                            data-user-name="<%= profile_user.name %>">
+                      <i class="fas fa-unlock mr-2"></i>
+                      Unblock
+                    </button>
+                  <% } else if (isBlockedBy) { %>
+                    <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md transition duration-300 shadow-sm flex items-center" disabled>
+                      <i class="fas fa-ban mr-2"></i>
+                      You are blocked
+                    </button>
+                  <% } %>
+                <% } else { %>
+                  <!-- Simple buttons when friend system variables are not available -->
                   <button class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
                     Connect
                   </button>
                   <button class="ml-3 px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-blue-600 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
                     Message
                   </button>
-                </div>
-              </div>
-            <% } %>
+                <% } %>
+              <% } %>
+            </div>
           </div>
+          
+          <!-- Profile Edit Form - Only for own profile -->
+          <% if (user.id == profile_user.id) { %>
+            <form action="/users/update/<%= profile_user.id %>" enctype="multipart/form-data" method="post" class="mt-6 space-y-4">
+              <input id="avatar-upload" type="file" name="avatar" class="hidden">
+              
+              <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                <input 
+                  type="text" 
+                  id="name"
+                  name="name" 
+                  placeholder="Your Name" 
+                  value="<%= profile_user.name %>" 
+                  required
+                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"
+                >
+              </div>
+              
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input 
+                  type="email" 
+                  id="email"
+                  name="email" 
+                  placeholder="Your Email" 
+                  value="<%= profile_user.email %>" 
+                  required
+                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500"
+                >
+              </div>
+              
+              <div class="flex justify-end">
+                <button 
+                  type="submit"
+                  class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transition-colors"
+                >
+                  Update Profile
+                </button>
+              </div>
+            </form>
+          <% } %>
         </div>
       </div>
     </div>
+    
+    <!-- User Posts Section -->
+    <% if (typeof posts !== 'undefined') { %>
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-stream mr-2 text-blue-500"></i>
+          <%= profile_user.name %>'s Posts
+        </h2>
+        
+        <div id="user-posts">
+          <% if (posts && posts.length > 0) { %>
+            <ul>
+              <% for(post of posts) { %>
+                <%- include('_post') -%>
+              <% } %>
+            </ul>
+          <% } else { %>
+            <p class="text-gray-500 text-center py-4">No posts yet</p>
+          <% } %>
+        </div>
+      </div>
+    <% } %>
   </div>
+</div>

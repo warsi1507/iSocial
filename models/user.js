@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const multer = require('multer');
+const { type } = require('os');
 const path = require('path');
 const AVATAR_PATH = path.join('/uploads/users/avatars')
 
@@ -29,7 +30,15 @@ const userSchema = new mongoose.Schema({
     {
         type: Boolean,
         default: false
-    }
+    },
+    friends: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'User'
+    }],
+    blockedUsers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'User'
+    }]
 }, {
     timestamps: true
 })

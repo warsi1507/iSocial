@@ -24,7 +24,11 @@ const ToggleLike = {
                 }
                 console.log(`Current LikesCount: ${likesCount}`);
                 self.attr('data-likes', likesCount);
-                self.html(`${likesCount} Likes`);
+                if(data.data.deleted){
+                    self.html('<i class="fa-regular fa-heart mr-1 hover:text-red-500"></i> ' + likesCount);
+                } else {
+                    self.html('<i class="fa-solid fa-heart mr-1 text-red-500"></i> ' + likesCount);
+                }
             },
             error: function(err){
                 console.error("Error in liking:", err);

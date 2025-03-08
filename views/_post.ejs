@@ -11,9 +11,9 @@
         </div>
         
         <% if (locals.user && locals.user.id === post.user.id) { %>
-            <button class="delete-post-button text-gray-400 hover:text-red-500 transition-colors duration-300" data-id="<%= post._id %>">
+            <a href="/posts/destroy/<%= post._id %>" class="delete-post-button text-gray-400 hover:text-red-500 transition-colors duration-300">
                 <i class="fas fa-trash-alt"></i>
-            </button>
+            </a>
         <% } %>
     </div>
 
@@ -27,19 +27,23 @@
                 <a class="toggle-like-button flex items-center text-gray-500 hover:text-blue-500 transition-colors duration-300 px-2 py-1 rounded-md" 
                    data-likes="<%= post.likes.length %>" 
                    href="/likes/toggle/?id=<%=post._id%>&type=Post">
-                    <i class="far fa-heart mr-1"></i>
-                    <span><%= post.likes.length %> Likes</span>
+                    <% if (post.likes.some(like => like.user.toString() === locals.user.id.toString())) { %>
+                        <i class="fa-solid fa-heart mr-1 text-red-500"></i>
+                    <% } else { %>
+                        <i class="fa-regular fa-heart mr-1 hover:text-red-500"></i>
+                    <% } %>
+                    <span><%= post.likes.length %></span>
                 </a>
             <% } else { %>
                 <span class="flex items-center text-gray-500 px-2 py-1">
                     <i class="far fa-heart mr-1"></i>
-                    <%= post.likes.length %> Likes
+                    <span><%= post.likes.length %></span>
                 </span>
             <% } %>
             
             <button class="flex items-center text-gray-500 hover:text-blue-500 transition-colors duration-300 px-2 py-1 rounded-md comment-toggle">
                 <i class="far fa-comment mr-1"></i>
-                <span><%= post.comments.length %> Comments</span>
+                <span>Comments</span>
             </button>
         </div>
         
