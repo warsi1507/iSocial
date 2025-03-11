@@ -1,0 +1,40 @@
+<div class="container mx-auto py-8">
+  <h1 class="text-2xl font-bold mb-4">Friend Requests</h1>
+  <% if (friendRequests && friendRequests.length > 0) { %>
+    <ul>
+      <% friendRequests.forEach(function(request) { %>
+        <li class="bg-white p-4 rounded shadow mb-4 flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+              <% if (request.avatar) { %>
+                <img src="<%= request.avatar %>" alt="<%= request.name %>" class="w-10 h-10 rounded-full">
+              <% } else { %>
+                <%= request.name.charAt(0).toUpperCase() %>
+              <% } %>
+            </div>
+            <div>
+              <h3 class="text-lg font-medium"><%= request.name %></h3>
+              <p class="text-sm text-gray-500">@<%= request.username %></p>
+            </div>
+          </div>
+          <div class="flex space-x-2">
+            <!-- Accept button fires AJAX directly -->
+            <button class="accept-friend-request bg-blue-500 text-white px-4 py-2 rounded" data-id="<%= request.id %>">
+              Accept
+            </button>
+            <!-- Reject button triggers the confirmation modal -->
+            <button class="reject-friend-request-btn bg-red-500 text-white px-4 py-2 rounded" data-id="<%= request.id %>" data-name="<%= request.name %>">
+              Reject
+            </button>
+            <!-- Reject & Block button triggers a different confirmation modal -->
+            <!-- <button class="reject-block-friend-request-btn bg-red-700 text-white px-4 py-2 rounded" data-id="<%= request.id %>" data-name="<%= request.name %>">
+              Reject & Block
+            </button> -->
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p class="text-gray-500">No friend requests found.</p>
+  <% } %>
+</div>

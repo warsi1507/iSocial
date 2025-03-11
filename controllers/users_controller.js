@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Friendship = require('../models/friendship')
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -6,11 +7,44 @@ const queue = require('../configs/bull');
 const userEmailWorker = require('../workers/resetPassword_email_worker');
 
 module.exports.profile = async function (req, res) {
-    let user = await User.findById(req.params.id);
-    return res.render('user_profile', {
-        title: "Profile",
-        profile_user: user
-    });
+    try {
+        let currentUser = await User.findById(req.user._id).populate('friends blockedUsers');
+        
+        let profileUser = await User.findById(req.params.id).populate('friends blockedUsers');
+
+        if (!profileUser) {
+            return res.status(404).send('User not found');
+        }
+
+        let isFriend = currentUser.friends.some(friendId => friendId.equals(profileUser._id));
+
+        let requestSent = await Friendship.findOne({ from_user: currentUser._id, to_user: profileUser._id });
+        let requestReceived = await Friendship.findOne({ from_user: profileUser._id, to_user: currentUser._id });
+
+        let hasSentRequest = !!requestSent;
+        let hasReceivedRequest = !!requestReceived;
+        let friendRequestId = requestReceived ? requestReceived.from_user._id : null;
+        
+
+        let isBlocked = currentUser.blockedUsers.some(blockedId => blockedId.equals(profileUser._id));
+        let isBlockedBy = profileUser.blockedUsers.some(blockedId => blockedId.equals(currentUser._id));
+
+        return res.render('user_profile', {
+            title: `${profileUser.name}'s Profile`,
+            user: currentUser,
+            profile_user: profileUser,
+            isFriend: isFriend,
+            hasSentRequest: hasSentRequest,
+            hasReceivedRequest: hasReceivedRequest,
+            friendRequestId: friendRequestId,
+            isBlocked: isBlocked,
+            isBlockedBy: isBlockedBy
+        });
+
+    } catch (err) {
+        console.error('Error loading profile:', err);
+        return res.redirect('/');
+    }
 }
 
 module.exports.update = async function(req, res){
@@ -210,10 +244,10 @@ module.exports.destroySession = function (req, res){
 
 module.exports.blockUser = async function (req, res) {
     try {
-        if (!req.query.id || !req.user._id) {
+        if (!req.body.id || !req.user._id) {
             return res.status(400).json({ message: 'Invalid request parameters' });
         }
-        let userToBlock = await User.findById(req.query.id);
+        let userToBlock = await User.findById(req.body.id);
         let currentUser = await User.findById(req.user._id);
 
         if (!userToBlock) {
@@ -237,10 +271,10 @@ module.exports.blockUser = async function (req, res) {
 
 module.exports.unblockUser = async function (req, res) {
     try {
-        if (!req.query.id || !req.user._id) {
+        if (!req.body.id || !req.user._id) {
             return res.status(400).json({ message: 'Invalid request parameters' });
         }
-        let userToUnblock = await User.findById(req.query.id);
+        let userToUnblock = await User.findById(req.body.id);
         let currentUser = await User.findById(req.user._id);
 
         if (!userToUnblock) {

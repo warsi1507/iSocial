@@ -2,10 +2,10 @@ const User = require('../models/user');
 const Friendship = require('../models/friendship');
 module.exports.sendRequest = async function(req, res) {
     try {
-        if (!req.query.id || !req.user._id) {
+        if (!req.body.id || !req.user._id) {
             return res.status(400).json({ message: 'Invalid request parameters' });
         }
-        let recipient = await User.findById(req.query.id);
+        let recipient = await User.findById(req.body.id);
         let sender = await User.findById(req.user._id);
         if (!recipient || !sender) {
             return res.status(400).json({
@@ -40,14 +40,22 @@ module.exports.sendRequest = async function(req, res) {
 
 module.exports.acceptRequest = async function (req, res) {
     try {
-        if (!req.query.id || !req.user._id) {
+        if (!req.body.id || !req.user._id) {
             return res.status(400).json({ message: 'Invalid request parameters' });
         }
-        let sender = await User.findById(req.query.id);
+        let sender = await User.findById(req.body.id);
         let recipient = await User.findById(req.user._id);
+        if (!sender || !recipient) {
+            return res.status(400).json({
+            message: 'User not found',
+            sender: sender?._id,
+            recipient: recipient?._id
+            });
+        }
 
         let friendship = await Friendship.findOne({ from_user: sender._id, to_user: recipient._id });
         if (!friendship) return res.status(400).json({ message: 'Request not found' });
+        console.log("herr");
 
         sender.friends.push(recipient._id);
         recipient.friends.push(sender._id);
@@ -67,10 +75,10 @@ module.exports.acceptRequest = async function (req, res) {
 
 module.exports.rejectRequest = async function (req, res) {
     try {
-        if (!req.query.id || !req.user._id) {
+        if (!req.body.id || !req.user._id) {
             return res.status(400).json({ message: 'Invalid request parameters' });
         }
-        let sender = await User.findById(req.query.id);
+        let sender = await User.findById(req.body.id);
         let recipient = await User.findById(req.user._id);
 
         let friendship = await Friendship.findOne({ from_user: sender._id, to_user: recipient._id });
@@ -87,10 +95,10 @@ module.exports.rejectRequest = async function (req, res) {
 
 module.exports.rejectAndBlockRequest = async function (req, res) {
     try {
-        if (!req.query.id || !req.user._id) {
+        if (!req.body.id || !req.user._id) {
             return res.status(400).json({ message: 'Invalid request parameters' });
         }
-        let sender = await User.findById(req.query.id);
+        let sender = await User.findById(req.body.id);
         let recipient = await User.findById(req.user._id);
 
         let friendship = await Friendship.findOne({ from_user: sender._id, to_user: recipient._id });
@@ -110,10 +118,10 @@ module.exports.rejectAndBlockRequest = async function (req, res) {
 
 module.exports.removeFriends = async function (req, res) {
     try {
-        if (!req.query.id || !req.user._id) {
+        if (!req.body.id || !req.user._id) {
             return res.status(400).json({ message: 'Invalid request parameters' });
         }
-        let friendToRemove = await User.findById(req.query.id);
+        let friendToRemove = await User.findById(req.body.id);
         let currentUser = await User.findById(req.user._id);
 
         if (!friendToRemove || !currentUser) {
