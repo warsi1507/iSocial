@@ -6,7 +6,28 @@
             </div>
             <div>
                 <h3 class="font-medium text-gray-800"><%= post.user.name %></h3>
-                <p class="text-xs text-gray-500">Posted just now</p>
+                <span class="text-xs text-gray-400 ml-3">
+                    <%= (() => {
+                    const now = new Date();
+                    const createdAt = new Date(post.createdAt);
+                    const diffInSeconds = Math.floor((now - createdAt) / 1000);
+                    const diffInMinutes = Math.floor(diffInSeconds / 60);
+                    const diffInHours = Math.floor(diffInMinutes / 60);
+                    const diffInDays = Math.floor(diffInHours / 24);
+        
+                    if (diffInSeconds < 60) {
+                        return `${diffInSeconds} seconds ago`;
+                    } else if (diffInMinutes < 60) {
+                        return `${diffInMinutes} minutes ago`;
+                    } else if (diffInHours < 24) {
+                        return `${diffInHours} hours ago`;
+                    } else if (diffInDays === 1) {
+                        return `Yesterday`;
+                    } else {
+                        return `${createdAt.getDate()} ${createdAt.toLocaleString('default', { month: 'long' })} ${createdAt.getFullYear()}`;
+                    }
+                    })() %>
+                </span>
             </div>
         </div>
         

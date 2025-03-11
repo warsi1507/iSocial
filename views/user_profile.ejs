@@ -160,7 +160,7 @@
     </div>
     
     <!-- User Posts Section -->
-    <% if (true) { %>
+    <% if (typeof posts !== 'undefined') { %>
       <div class="bg-white rounded-lg shadow-md p-6">
         <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
           <i class="fas fa-stream mr-2 text-blue-500"></i>
@@ -170,9 +170,9 @@
         <div id="user-posts">
           <% if (posts && posts.length > 0) { %>
             <ul>
-              <% posts.forEach(post => { %>
+                <% for (let post of posts) { %>
                 <%- include('_post', { post: post }) %>
-              <% }) %>
+                <% } %>
             </ul>
           <% } else { %>
             <p class="text-gray-500 text-center py-4">No posts yet</p>

@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const Friendship = require('../models/friendship')
+const Post = require('../models/post')
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -29,6 +30,18 @@ module.exports.profile = async function (req, res) {
         let isBlocked = currentUser.blockedUsers.some(blockedId => blockedId.equals(profileUser._id));
         let isBlockedBy = profileUser.blockedUsers.some(blockedId => blockedId.equals(currentUser._id));
 
+        let posts = await Post.find({user: profileUser._id}).sort('-createdAt')
+        .populate({
+            path: 'user likes'
+        })
+        .populate({
+            path: 'comments',
+            populate: {
+                path: 'user likes'
+            },
+            options: { sort: { 'createdAt': -1 } }
+        });
+        
         return res.render('user_profile', {
             title: `${profileUser.name}'s Profile`,
             user: currentUser,
@@ -38,7 +51,8 @@ module.exports.profile = async function (req, res) {
             hasReceivedRequest: hasReceivedRequest,
             friendRequestId: friendRequestId,
             isBlocked: isBlocked,
-            isBlockedBy: isBlockedBy
+            isBlockedBy: isBlockedBy,
+            posts: posts
         });
 
     } catch (err) {
@@ -293,5 +307,28 @@ module.exports.unblockUser = async function (req, res) {
 
     } catch (err) {
         return res.status(500).json({ message: 'Internal server error', error: err.message });
+    }
+};
+
+module.exports.friendRequests = async function(req, res) {
+    try {
+        let requests = await Friendship.find({ to_user: req.user._id }).populate('from_user');
+        
+        let friendRequests = requests.map(fr => {
+            return {
+                id: fr.from_user._id,
+                name: fr.from_user.name,
+                email: fr.from_user.email,
+                avatar: fr.from_user.avatar
+            };
+        });
+
+        return res.render('friend_request', {
+            title: "Friend Requests",
+            friendRequests: friendRequests
+        });
+    } catch (err) {
+        console.error("Error fetching friend requests:", err);
+        return res.redirect('back');
     }
 };

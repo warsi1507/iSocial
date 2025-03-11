@@ -17,9 +17,9 @@
               </a>
             </li>
             <li>
-              <a href="#" class="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100 text-gray-700 transition-colors duration-300">
-                <i class="fas fa-bell"></i>
-                <span>Notifications</span>
+              <a href="/users/requests" class="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100 text-gray-700 transition-colors duration-300">
+              <i class="fas fa-user-friends"></i>
+              <span>Friend Requests</span>
               </a>
             </li>
             <li>
@@ -29,17 +29,17 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100 text-gray-700 transition-colors duration-300">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
-              </a>
-            </li>
-            <li>
               <a href="#" class="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100 text-gray-700 transition-colors duration-300">
                 <i class="fas fa-search"></i>
                 <span>Explore Peoples</span>
             </a>
         </li>
+        <li>
+          <a href="#" class="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100 text-gray-700 transition-colors duration-300">
+            <i class="fas fa-info-circle"></i>
+            <span>About Us</span>
+        </a>
+    </li>
     </ul>
     
     <hr class="my-6 border-gray-400">
@@ -55,7 +55,7 @@
           </div>
           <div>
             <h3 class="font-medium text-gray-800 text-lg"><%= locals.user.name %></h3>
-            <p class="text-sm text-gray-500">@<%= locals.user.username %></p>
+            <p class="text-sm text-gray-500"><%= locals.user.email %></p>
           </div>
         </a>
       <% } else { %>
@@ -132,10 +132,8 @@
           <div id="posts-list-container" class="border border-gray-300 pt-4 pb-4 px-2 rounded-b-lg shadow-md">
             <ul id="all-posts-list" class="hidden">
               <% for(post of posts) { %>
-                <% if (!locals.user.friends.includes(post.user.id)) { %>
-                  <%- include('_post', { post: post }) -%>
-                <% } %>
-              <% } %>
+                <%- include('_post', { post: post }) -%>
+              <% }%>
             </ul>
             <ul id="friends-posts-list" class="hidden">
               <% if (posts.length === 0 || !posts.some(post => locals.user.friends.includes(post.user.id))) { %>
@@ -177,26 +175,19 @@
             <i class="fas fa-search text-gray-500 mr-2"></i>
             <input type="text" placeholder="Search by name or username..." class="w-full focus:outline-none" />
           </div>
-          
-          <div class="bg-white rounded-lg shadow-md h-[40%] p-2 overflow-y-scroll my-2">
-            <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-              <i class="fas fa-bell mr-2 text-blue-500"></i>
-              Notifications
-            </h3>
-            
-            <p class="text-gray-500 text-sm text-center">No notifications available.</p>
-          </div>
         
-          <div class="bg-white rounded-lg shadow-md h-[45%] p-2 overflow-y-scroll my-2">
+          <div class="bg-white rounded-lg shadow-md h-[40%] p-2 overflow-y-scroll my-2">
             <h3 class="text-xl font-semibold text-gray-800 mb-2 flex items-center">
               <i class="fas fa-users mr-2 text-blue-500"></i>
               Friends
             </h3>
-            <!-- && locals.user.friends.length > 0 -->
-            <% if (locals.user) { %>
+            <% if (locals.user && locals.user.friends.length > 0 ) { %>
               <ul class="divide-y divide-gray-100">
-                <!-- friend of locals.user.friends -->
-                <% for(friend of all_users) { %>
+                <%
+                  const friendIds = locals.user.friends.map(id => id.toString());
+                  const friends = all_users.filter(user => friendIds.includes(user.id.toString()));
+                %>
+                <% for(friend of friends) { %>
                   <li class="py-2">
                     <a href="/users/profile/<%= friend.id %>" class="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md transition-colors duration-300">
                       <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600">
@@ -214,6 +205,30 @@
             <% } else { %>
               <p class="text-gray-500 text-center py-4">No friends found</p>
             <% } %>
+          </div>
+          <div class="bg-white rounded-lg shadow-md h-[45%] p-2 overflow-y-scroll my-2">
+            <h3 class="text-xl font-semibold text-gray-800 mb-2 flex items-center">
+              <i class="fas fa-users mr-2 text-blue-500"></i>
+              Peoples
+            </h3>
+              <ul class="divide-y divide-gray-100">
+                <% for(e_user of all_users) { %>
+                  <% if (locals.user && e_user.id !== locals.user.id) { %>
+                  <li class="py-2">
+                    <a href="/users/profile/<%= e_user.id %>" class="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md transition-colors duration-300">
+                    <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600">
+                      <% if (e_user.avatar) { %>
+                      <img src="<%= e_user.avatar %>" alt="<%= e_user.name %>" class="w-8 h-8 rounded-full">
+                      <% } else { %>
+                      <%= e_user.name.charAt(0).toUpperCase() %>
+                      <% } %>
+                    </div>
+                    <span class="font-medium text-gray-700"><%= e_user.name %></span>
+                    </a>
+                  </li>
+                  <% } %>
+                <% } %>
+              </ul>
           </div>
         </div>
       </div>
@@ -236,14 +251,14 @@
     <a href="/" class="text-gray-600 hover:text-blue-500">
       <i class="fas fa-home text-2xl"></i>
     </a>
-    <a href="#" class="text-gray-600 hover:text-blue-500">
-      <i class="fas fa-bell text-2xl"></i>
-    </a>
-    <a href="#" class="text-gray-600 hover:text-blue-500">
-      <i class="fas fa-cog text-2xl"></i>
+    <a href="/users/requests" class="text-gray-600 hover:text-blue-500">
+      <i class="fas fa-user-friends text-2xl"></i>
     </a>
     <a href="#" class="text-gray-600 hover:text-blue-500">
       <i class="fas fa-search text-2xl"></i>
+    </a>
+    <a href="#" class="text-gray-600 hover:text-blue-500">
+      <i class="fas fa-info-circle text-2xl"></i>
     </a>
   </div>
 

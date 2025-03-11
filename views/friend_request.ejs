@@ -1,40 +1,75 @@
-<div class="container mx-auto py-8">
-  <h1 class="text-2xl font-bold mb-4">Friend Requests</h1>
+<div class="container mx-auto py-8 w-full md:w-[70%]">
+  <h1 class="text-2xl font-bold mb-6 text-center">Friend Requests</h1>
   <% if (friendRequests && friendRequests.length > 0) { %>
-    <ul>
+    <ul class="space-y-4">
       <% friendRequests.forEach(function(request) { %>
-        <li class="bg-white p-4 rounded shadow mb-4 flex items-center justify-between">
-          <div class="flex items-center space-x-4">
-            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+        <li class="friend-request-item bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row items-center justify-between hover:shadow-lg transition duration-300">
+          <div class="flex items-center space-x-4 mb-4 md:mb-0">
+            <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
               <% if (request.avatar) { %>
-                <img src="<%= request.avatar %>" alt="<%= request.name %>" class="w-10 h-10 rounded-full">
+                <img src="<%= request.avatar %>" alt="<%= request.name %>" class="w-full h-full object-cover">
               <% } else { %>
-                <%= request.name.charAt(0).toUpperCase() %>
+                <span class="text-xl font-bold text-gray-600"><%= request.name.charAt(0).toUpperCase() %></span>
               <% } %>
             </div>
             <div>
-              <h3 class="text-lg font-medium"><%= request.name %></h3>
-              <p class="text-sm text-gray-500">@<%= request.username %></p>
+              <h3 class="text-lg font-semibold text-gray-800"><%= request.name %></h3>
+              <p class="text-sm text-gray-500"><%= request.email %></p>
             </div>
           </div>
-          <div class="flex space-x-2">
-            <!-- Accept button fires AJAX directly -->
-            <button class="accept-friend-request bg-blue-500 text-white px-4 py-2 rounded" data-id="<%= request.id %>">
-              Accept
+          <div class="flex flex-wrap items-center space-x-2">
+            <button class="accept-friend-request bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 shadow-sm flex items-center"
+                    data-id="<%= request.id %>">
+              <i class="fas fa-user-check mr-2"></i>
+              Accept Request
             </button>
-            <!-- Reject button triggers the confirmation modal -->
-            <button class="reject-friend-request-btn bg-red-500 text-white px-4 py-2 rounded" data-id="<%= request.id %>" data-name="<%= request.name %>">
-              Reject
+            <button class="reject-friend-request bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300 shadow-sm flex items-center"
+                    data-id="<%= request.id %>">
+              <i class="fas fa-user-times mr-2"></i>
+              Reject Request
             </button>
-            <!-- Reject & Block button triggers a different confirmation modal -->
-            <!-- <button class="reject-block-friend-request-btn bg-red-700 text-white px-4 py-2 rounded" data-id="<%= request.id %>" data-name="<%= request.name %>">
-              Reject & Block
-            </button> -->
+            <button class="reject-block-friend-request bg-red-700 text-white px-4 py-2 rounded-md hover:bg-red-800 transition duration-300 shadow-sm flex items-center"
+                    data-id="<%= request.id %>">
+              <i class="fas fa-ban mr-2"></i>
+              Reject & Block Request
+            </button>
           </div>
         </li>
-      <% }) %>
+      <% }); %>
     </ul>
   <% } else { %>
-    <p class="text-gray-500">No friend requests found.</p>
+    <div class="text-center py-6">
+      <p class="text-gray-500 text-lg">No friend requests found.</p>
+    </div>
   <% } %>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  function removeRequest(button) {
+    const listItem = button.closest('.friend-request-item');
+    if(listItem) listItem.remove();
+  }
+  document.querySelectorAll('.accept-friend-request').forEach(button => {
+    button.addEventListener('click', function() {
+      const requestId = this.getAttribute('data-id');
+      removeRequest(this);
+    });
+  });
+  document.querySelectorAll('.reject-friend-request').forEach(button => {
+    button.addEventListener('click', function() {
+      const requestId = this.getAttribute('data-id');
+      removeRequest(this);
+    });
+  });
+
+  document.querySelectorAll('.reject-block-friend-request').forEach(button => {
+    button.addEventListener('click', function() {
+      const requestId = this.getAttribute('data-id');
+      removeRequest(this);
+    });
+  });
+});
+</script>
+
+<script src="/js/user_block.js"></script>
+<script src="/js/friends.js"></script>

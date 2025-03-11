@@ -37,4 +37,5 @@ router.post('/update-password/:accessToken', usersController.updatePassword);
 router.post('/block-user', usersController.blockUser);
 router.post('/unblock-user', usersController.unblockUser);
 
+router.get('/requests', usersController.friendRequests);
 module.exports = router;
