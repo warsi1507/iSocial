@@ -57,7 +57,7 @@ module.exports.profile = async function (req, res) {
 
     } catch (err) {
         console.error('Error loading profile:', err);
-        return res.redirect('/');
+        return res.status(500).send("Internal Server Error");
     }
 }
 

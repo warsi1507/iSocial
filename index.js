@@ -1,4 +1,8 @@
 const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
+const chatSockets = require('./configs/chat_sockets.js').chatSockets;
+
 const expressLayout = require('express-ejs-layouts');
 const db = require('./configs/mongoose.js');
 const cookieParser = require('cookie-parser');
@@ -13,9 +17,14 @@ const passportJWT = require('./configs/passport-jwt-strategy.js');
 const passportGoogle = require('./configs/passport-google-oauth2-strategy.js');
 
 const MongoStore = require('connect-mongo');
+
 require('dotenv').config();
 
 const app = express();
+
+const server = http.createServer(app);
+const io = socketIo(server, {cors: {origin: process.env.CORS_ORIGIN}})
+chatSockets(io);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -65,10 +74,9 @@ app.use(flashMiddleware.setFlash);
 // use express router
 app.use('/', require('./routes/index.js'));
 
-app.listen(process.env.PORT, (err)=>{
+server.listen(process.env.PORT, (err)=>{
     if(err){
         console.error(`Error in running the server: ${err}`);
     }
-
     console.log(`Server is running on port: ${process.env.PORT}`);
 })

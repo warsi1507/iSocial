@@ -11,6 +11,7 @@ router.use('/posts', require('./posts.js'));
 router.use('/comments', require('./comments.js'));
 router.use('/likes', require('./likes.js'));
 router.use('/friends', require('./friends.js'));
+router.use('/chats',require('./chats.js'))
 
 router.use('/api', require('./api'))
 
