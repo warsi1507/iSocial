@@ -6,6 +6,12 @@ const path = require('path');
 const crypto = require('crypto');
 const queue = require('../configs/bull');
 const userEmailWorker = require('../workers/resetPassword_email_worker');
+const verifyEmailWorker = require('../workers/verify_email_worker');
+
+function isStrongPassword(password) {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regex.test(password);
+}
 
 module.exports.profile = async function (req, res) {
     try {
@@ -69,7 +75,19 @@ module.exports.update = async function(req, res){
                 if(err) {console.log('Multer Error:',err);}
 
                 user.name = req.body.name;
-                user.email = req.body.email;
+                if(req.body.email && req.body.email !== user.email){
+                    user.email = req.body.email;
+                    user.isVerified = false;
+                    const verificationToken = crypto.randomBytes(20).toString('hex');
+                    user.verificationToken = verificationToken;
+                    newUser.verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+                    
+                    await queue.add('verification_emails', user, {
+                        attempts: 3,
+                        backoff: 5000
+                    });
+                }
+
 
                 if(req.file){
                     if (user.avatar) {
@@ -126,6 +144,11 @@ module.exports.create = async function (req, res) {
             return res.redirect(req.get('Referer') || '/');
         }
 
+        if (!isStrongPassword(req.body.password)) {
+            req.flash('error', 'Password is not strong enough. It must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.');
+            return res.redirect(req.get('Referer') || '/');
+        }
+
         // Check if the user already exists
         let user = await User.findOne({ email: req.body.email });
 
@@ -136,10 +159,24 @@ module.exports.create = async function (req, res) {
 
         // Create a new user
         let newUser = await User.create(req.body);
+         
+        // Generate email verification token
+         const verificationToken = crypto.randomBytes(20).toString('hex');
+         newUser.verificationToken = verificationToken;
+         newUser.isVerified = false;
+         newUser.verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+         
+         // Add verification email job to the queue
+         await queue.add('verification_emails', newUser, {
+             attempts: 3,
+             backoff: 5000
+        });
+            
+        await newUser.save();
         console.log("***** User Account Created *****");
-        console.log(newUser);
+        // console.log(newUser);
 
-        req.flash('success', 'User Account Created !!')
+        req.flash('success', 'Account created! Please verify your email before signing in.')
         // Redirect to sign-in page
         return res.redirect('/users/sign-in');
     } catch (err) {
@@ -330,5 +367,36 @@ module.exports.friendRequests = async function(req, res) {
     } catch (err) {
         console.error("Error fetching friend requests:", err);
         return res.redirect('back');
+    }
+};
+
+module.exports.verifyEmail = async function(req, res) {
+    try {
+        const token = req.params.token;
+        // Find the user with the matching verification token
+        const user = await User.findOne({ verificationToken: token });
+        
+        if (!user) {
+            return res.render('user_verify', {
+                title: 'Email Verification',
+                message: 'Invalid or expired verification token.'
+            });
+        }
+        
+        // Mark the user as verified and remove the token
+        user.isVerified = true;
+        user.verificationToken = undefined;
+        await user.save();
+        
+        return res.render('user_verify', {
+            title: 'Email Verification',
+            message: 'Email verified successfully. You can now log in.'
+        });
+    } catch (err) {
+        console.error("Error during email verification:", err);
+        return res.render('user_verify', {
+            title: 'Email Verification',
+            message: 'An error occurred during email verification.'
+        });
     }
 };

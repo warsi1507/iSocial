@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Comment = require('./comment');
 
 const postSchema = new mongoose.Schema({
     content: {
@@ -26,6 +27,16 @@ const postSchema = new mongoose.Schema({
 },{
     timestamps: true
 })
+
+postSchema.pre('remove', async function(next) {
+    try {
+        // Delete all comments that reference this post
+        await Comment.deleteMany({ post: this._id });
+        next();
+    } catch (err) {
+        next(err);
+    }
+});
 
 const Post = mongoose.model('Post', postSchema);
 module.exports = Post;

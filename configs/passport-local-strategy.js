@@ -3,6 +3,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
 
 // authentication using passport 
 passport.use(new LocalStrategy({
@@ -20,7 +21,12 @@ passport.use(new LocalStrategy({
                 return done(null, false);
             }
 
-            const isMatch = (user.password == password);
+            if (!user.isVerified) {
+                req.flash('error', 'Please verify your email before logging in.');
+                return done(null, false);
+            }
+
+            const isMatch = await bcrypt.compare(password, user.password);;
             if (!isMatch) {
                 req.flash('error', 'Invalid Username or Password');
                 console.log(`Login failed: Incorrect password for user ${email}`);

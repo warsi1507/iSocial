@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Email Verification - iSocial</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+        .email-header {
+            background-color: #0091ea;
+            padding: 20px;
+            text-align: center;
+        }
+        .email-body {
+            padding: 30px;
+        }
+        .email-footer {
+            background-color: #f5f5f5;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        a.button {
+            background-color: #0091ea;
+            color: #ffffff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <h1>Email Verification</h1>
+        </div>
+        <div class="email-body">
+            <p>Hi <%= user.name %>,</p>
+            <p>Thank you for registering with iSocial. Please verify your email by clicking the link below:</p>
+            <p><a class="button" href="<%= verificationUrl %>">Verify Email</a></p>
+            <p>If the button doesn't work, copy and paste the following URL into your browser:</p>
+            <p><%= verificationUrl %></p>
+            <p style="color: red;"><strong>Note:</strong> Your account will be deleted if the email is not verified before the token expires.</p>
+            <p>Thanks,<br/>The iSocial Team</p>
+        </div>
+        <div class="email-footer">
+            <p>© 2025 iSocial. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

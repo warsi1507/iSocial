@@ -23,6 +23,7 @@
   "author": "Samar Warsi",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "bull": "^4.16.5",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^5.1.0",
@@ -36,6 +37,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.2",
     "multer": "^1.4.5-lts.1",
+    "node-cron": "^3.0.3",
     "nodemailer": "^6.10.0",
     "passport": "^0.7.0",
     "passport-google-oauth": "^2.0.0",
@@ -43,7 +45,8 @@
     "passport-local": "^1.0.0",
     "sass": "^1.83.0",
     "socket.io": "^4.8.1",
-    "toastr": "^2.1.4"
+    "toastr": "^2.1.4",
+    "validator": "^13.12.0"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.0.9",

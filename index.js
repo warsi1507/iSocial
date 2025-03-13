@@ -15,6 +15,7 @@ const passport = require('passport');
 const passportLocal = require('./configs/passport-local-strategy.js');
 const passportJWT = require('./configs/passport-jwt-strategy.js');
 const passportGoogle = require('./configs/passport-google-oauth2-strategy.js');
+const cron = require('node-cron');
 
 const MongoStore = require('connect-mongo');
 
@@ -80,3 +81,8 @@ server.listen(process.env.PORT, (err)=>{
     }
     console.log(`Server is running on port: ${process.env.PORT}`);
 })
+
+cron.schedule('0 */6 * * *', async () => {
+    console.log("Running cleanup job for expired unverified users...");
+    await deleteExpiredUsers();
+});

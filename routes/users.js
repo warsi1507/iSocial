@@ -38,4 +38,5 @@ router.post('/block-user', usersController.blockUser);
 router.post('/unblock-user', usersController.unblockUser);
 
 router.get('/requests', usersController.friendRequests);
+router.get('/verify-email/:token', usersController.verifyEmail);
 module.exports = router;
