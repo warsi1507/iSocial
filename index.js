@@ -16,6 +16,7 @@ const passportLocal = require('./configs/passport-local-strategy.js');
 const passportJWT = require('./configs/passport-jwt-strategy.js');
 const passportGoogle = require('./configs/passport-google-oauth2-strategy.js');
 const cron = require('node-cron');
+const User = require('./models/user.js');
 
 const MongoStore = require('connect-mongo');
 
@@ -82,7 +83,22 @@ server.listen(process.env.PORT, (err)=>{
     console.log(`Server is running on port: ${process.env.PORT}`);
 })
 
-cron.schedule('0 */6 * * *', async () => {
+
+
+cron.schedule('0 * * * *', async () => {
     console.log("Running cleanup job for expired unverified users...");
     await deleteExpiredUsers();
 });
+
+const deleteExpiredUsers = async () => {
+    const now = new Date();
+    try {
+        const result = await User.deleteMany({
+            isVerified: false,
+            verificationTokenExpires: { $lt: now }
+        });
+        console.log(`Deleted ${result.deletedCount} expired unverified users.`);
+    } catch (error) {
+        console.error("Error deleting expired unverified users:", error);
+    }
+};

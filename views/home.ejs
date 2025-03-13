@@ -1,297 +1,353 @@
 <div id="home-container" class="container mx-auto pb-16">
-    <div class="flex flex-col lg:flex-row gap-6">
-      <!-- Left Sidebar - Visible on Large Screens -->
-      <div class="hidden lg:block lg:w-1/4 h-screen sticky top-5">
-        <div class="bg-white rounded-lg shadow-md p-4 h-[93%]">
-        <div class="flex items-center justify-center mb-8">
-          <img src="/images/isocial-logo.png" alt="iSocial Logo" class="w-60 h-auto">
-        </div>
-        
-        <hr class="my-6 border-gray-400">
-        
-        <ul class="space-y-2">
-            <li>
-              <a href="/" class="flex items-center space-x-3 p-2 rounded-md bg-blue-50 text-blue-600">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
-              </a>
-            </li>
-            <li>
-              <a href="/users/requests" class="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100 text-gray-700 transition-colors duration-300">
-              <i class="fas fa-user-friends"></i>
-              <span>Friend Requests</span>
-              </a>
-            </li>
-            <li>
-              <a href="/chats" class="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100 text-gray-700 transition-colors duration-300">
-                  <i class="fas fa-envelope"></i>
-                  <span>Messages</span>
-                </a>
-            </li>
-            <li>
-              <a href="#" class="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100 text-gray-700 transition-colors duration-300">
-                <i class="fas fa-search"></i>
-                <span>Explore Peoples</span>
+  <div class="flex flex-col lg:flex-row gap-6">
+    <!-- Left Sidebar - Visible on Large Screens -->
+    <div class="hidden lg:block lg:w-1/4 h-screen sticky top-5">
+      <div class="bg-white rounded-lg shadow-md p-4 h-[93%]">
+      <div class="flex items-center justify-center mb-8">
+        <img src="/images/isocial-logo.png" alt="iSocial Logo" class="w-60 h-auto">
+      </div>
+      
+      <hr class="my-6 border-gray-400">
+      
+      <ul class="space-y-2">
+          <li>
+            <a href="/" class="flex items-center space-x-3 p-2 rounded-md bg-blue-50 text-blue-600">
+              <i class="fas fa-home"></i>
+              <span>Home</span>
             </a>
-        </li>
-        <li>
-          <a href="#" class="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100 text-gray-700 transition-colors duration-300">
-            <i class="fas fa-info-circle"></i>
-            <span>About Us</span>
-        </a>
-    </li>
-    </ul>
-    
-    <hr class="my-6 border-gray-400">
-    <div class="flex items-center space-x-4 mb-8">
-      <% if (locals.user) { %>
-        <a href="/users/profile/<%= locals.user.id %>" class="flex items-center space-x-4">
-          <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 flex items-center justify-center text-white font-bold">
-            <% if (locals.user.avatar) { %>
-              <img src="<%= locals.user.avatar %>" alt="<%= locals.user.name %>" class="w-14 h-14 rounded-full">
-            <% } else { %>
-              <%= locals.user.name.charAt(0).toUpperCase() %>
-            <% } %>
-          </div>
-          <div>
-            <h3 class="font-medium text-gray-800 text-lg"><%= locals.user.name %></h3>
-            <p class="text-sm text-gray-500"><%= locals.user.email %></p>
-          </div>
-        </a>
-      <% } else { %>
-        <div class="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-          <i class="fas fa-user text-2xl"></i>
+          </li>
+          <li>
+            <a href="/users/requests" class="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100 text-gray-700 transition-colors duration-300">
+            <i class="fas fa-user-friends"></i>
+            <span>Friend Requests</span>
+            </a>
+          </li>
+          <li>
+            <a href="/chats" class="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100 text-gray-700 transition-colors duration-300">
+                <i class="fas fa-envelope"></i>
+                <span>Messages</span>
+              </a>
+          </li>
+          <li>
+            <a href="#" id="explore-peoples-link" class="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100 text-gray-700 transition-colors duration-300">
+              <i class="fas fa-search"></i>
+              <span>Explore Peoples</span>
+            </a>
+      </li>
+      <li>
+        <a href="#" class="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100 text-gray-700 transition-colors duration-300">
+          <i class="fas fa-info-circle"></i>
+          <span>About Us</span>
+      </a>
+  </li>
+  </ul>
+  
+  <hr class="my-6 border-gray-400">
+  <div class="flex items-center space-x-4 mb-8">
+    <% if (locals.user) { %>
+      <a href="/users/profile/<%= locals.user.id %>" class="flex items-center space-x-4">
+        <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 flex items-center justify-center text-white font-bold">
+          <% if (locals.user.avatar) { %>
+            <img src="<%= locals.user.avatar %>" alt="<%= locals.user.name %>" class="w-14 h-14 rounded-full">
+          <% } else { %>
+            <%= locals.user.name.charAt(0).toUpperCase() %>
+          <% } %>
         </div>
         <div>
-          <h3 class="font-medium text-gray-800 text-lg">Guest</h3>
-          <a href="/users/sign-in" class="text-sm text-blue-500">Sign in</a>
+          <h3 class="font-medium text-gray-800 text-lg"><%= locals.user.name %></h3>
+          <p class="text-sm text-gray-500"><%= locals.user.email %></p>
         </div>
-      <% } %>
-    </div>
-    
-          <a href="/users/sign-out" class="flex flex-end items-center space-x-3 p-2 rounded-md bg-red-50 text-red-600 hover:bg-red-100 transition-colors duration-300">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Logout</span>
-          </a>
-        </div>
+      </a>
+    <% } else { %>
+      <div class="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+        <i class="fas fa-user text-2xl"></i>
       </div>
+      <div>
+        <h3 class="font-medium text-gray-800 text-lg">Guest</h3>
+        <a href="/users/sign-in" class="text-sm text-blue-500">Sign in</a>
+      </div>
+    <% } %>
+  </div>
   
-      <!-- Main Content -->
-      <div class="w-[90%] ml-8 lg:ml-0 lg:w-2/4">
-        <section id="feed-posts" class="mb-2">
-          <% if (locals.user) { %>
-            <div class="bg-white rounded-lg shadow-md p-4 mb-6">
-              <div class="flex items-center space-x-3 mb-4">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 flex items-center justify-center text-white font-bold">
-                  <% if (locals.user.avatar) { %>
-                    <img src="<%= locals.user.avatar %>" alt="<%= locals.user.name %>" class="w-10 h-10 rounded-full">
-                  <% } else { %>
-                    <%= locals.user.name.charAt(0).toUpperCase() %>
-                  <% } %>
-                </div>
-                <h3 class="text-lg font-medium text-gray-800">Create a Post</h3>
+        <a href="/users/sign-out" class="flex flex-end items-center space-x-3 p-2 rounded-md bg-red-50 text-red-600 hover:bg-red-100 transition-colors duration-300">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="w-[90%] ml-12 lg:ml-0 lg:w-2/4">
+      <!-- Mobile Search Bar (Visible Only on Mobile) -->
+<div id="mobile-search-container" class="lg:hidden hidden p-4 bg-white rounded-lg shadow-md mb-6">
+  <div class="flex items-center border border-gray-300 rounded-lg p-2">
+    <i class="fas fa-search text-gray-500 mr-2"></i>
+    <input id="mobile-people-search" type="text" placeholder="Search peoples by name..." class="w-full focus:outline-none" />
+  </div>
+  <ul id="mobile-peoples-list" class="mt-4 divide-y divide-gray-100">
+    <% for(e_user of all_users) { %>
+      <% if (locals.user && e_user.id !== locals.user.id) { %>
+        <li class="py-2">
+          <a href="/users/profile/<%= e_user.id %>" class="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md transition-colors duration-300">
+            <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600">
+              <% if (e_user.avatar) { %>
+                <img src="<%= e_user.avatar %>" alt="<%= e_user.name %>" class="w-8 h-8 rounded-full">
+              <% } else { %>
+                <%= e_user.name.charAt(0).toUpperCase() %>
+              <% } %>
+            </div>
+            <span class="font-medium text-gray-700"><%= e_user.name %></span>
+          </a>
+        </li>
+      <% } %>
+    <% } %>
+  </ul>
+</div>
+
+      <section id="feed-posts" class="mb-2">
+        <% if (locals.user) { %>
+          <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+            <div class="flex items-center space-x-3 mb-4">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 flex items-center justify-center text-white font-bold">
+                <% if (locals.user.avatar) { %>
+                  <img src="<%= locals.user.avatar %>" alt="<%= locals.user.name %>" class="w-10 h-10 rounded-full">
+                <% } else { %>
+                  <%= locals.user.name.charAt(0).toUpperCase() %>
+                <% } %>
               </div>
+              <h3 class="text-lg font-medium text-gray-800">Create a Post</h3>
+            </div>
+            
+            <form action="/posts/create" method="post" id="new-post-form">
+              <textarea name="content" rows="3" 
+                placeholder="What's on your mind?" 
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none mb-3"
+                maxlength="400" required></textarea>
               
-              <form action="/posts/create" method="post" id="new-post-form">
-                <textarea name="content" rows="3" 
-                  placeholder="What's on your mind?" 
-                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none mb-3"
-                  maxlength="400" required></textarea>
-                
-                <div class="flex justify-between items-center">
-                  <div class="flex space-x-3">
-                    <button type="button" class="flex items-center text-gray-600 hover:text-blue-500 transition-colors duration-300">
-                      <i class="fas fa-image mr-1"></i>
-                      <span class="text-sm">Photo</span>
-                    </button>
-                    <button type="button" class="flex items-center text-gray-600 hover:text-blue-500 transition-colors duration-300">
-                      <i class="fas fa-video mr-1"></i>
-                      <span class="text-sm">Video</span>
-                    </button>
-                  </div>
-                  
-                  <button type="submit" class="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-6 py-2 rounded-lg transition duration-300 shadow-sm">
-                    Post
+              <div class="flex justify-between items-center">
+                <div class="flex space-x-3">
+                  <button type="button" class="flex items-center text-gray-600 hover:text-blue-500 transition-colors duration-300">
+                    <i class="fas fa-image mr-1"></i>
+                    <span class="text-sm">Photo</span>
                   </button>
                 </div>
-              </form>
-            </div>
-          <% } %>
-  
-          <!-- Tab Buttons -->
-          <div class="flex justify-center mb-0 text-center shadow-md">
-            <div id="all-posts-btn" class="px-4 py-2 w-1/2 bg-white border border-gray-300 border-b-0 cursor-pointer text-gray-900 rounded-tl-lg">
-              All Posts
-            </div>
-            <div id="friends-posts-btn" class="px-4 py-2 w-1/2 bg-gray-200 border border-gray-300 cursor-pointer text-gray-900 rounded-tr-lg">
-              Friends' Posts
-            </div>
+                
+                <button type="submit" class="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-6 py-2 rounded-lg transition duration-300 shadow-sm">
+                  Post
+                </button>
+              </div>
+            </form>
           </div>
-  
-          <!-- Posts Container -->
-          <div id="posts-list-container" class="border border-gray-300 pt-4 pb-4 px-2 rounded-b-lg shadow-md">
-            <ul id="all-posts-list" class="hidden">
+        <% } %>
+
+        <!-- Tab Buttons -->
+        <div class="flex justify-center mb-0 text-center shadow-md">
+          <div id="all-posts-btn" class="px-4 py-2 w-1/2 bg-white border border-gray-300 border-b-0 cursor-pointer text-gray-900 rounded-tl-lg">
+            All Posts
+          </div>
+          <div id="friends-posts-btn" class="px-4 py-2 w-1/2 bg-gray-200 border border-gray-300 cursor-pointer text-gray-900 rounded-tr-lg">
+            Friends' Posts
+          </div>
+        </div>
+
+        <!-- Posts Container -->
+        <div id="posts-list-container" class="border border-gray-300 pt-4 pb-4 px-2 rounded-b-lg shadow-md">
+          <ul id="all-posts-list" class="hidden">
+            <% for(post of posts) { %>
+              <%- include('_post', { post: post }) -%>
+            <% }%>
+          </ul>
+          <ul id="friends-posts-list" class="hidden">
+            <% if (posts.length === 0 || !posts.some(post => locals.user.friends.includes(post.user.id))) { %>
+              <p class="text-center text-gray-500">NO POST FOUND</p>
+            <% } else { %>
               <% for(post of posts) { %>
-                <%- include('_post', { post: post }) -%>
-              <% }%>
-            </ul>
-            <ul id="friends-posts-list" class="hidden">
-              <% if (posts.length === 0 || !posts.some(post => locals.user.friends.includes(post.user.id))) { %>
-                <p class="text-center text-gray-500">NO POST FOUND</p>
-              <% } else { %>
-                <% for(post of posts) { %>
-                  <% if (locals.user.friends.includes(post.user.id)) { %>
-                    <%- include('_post', { post: post }) -%>
-                  <% } %>
+                <% if (locals.user.friends.includes(post.user.id)) { %>
+                  <%- include('_post', { post: post }) -%>
                 <% } %>
               <% } %>
-            </ul>
-          </div>
-        </section>
-  
-        <script>
-          document.getElementById('all-posts-btn').addEventListener('click', function() {
-            document.getElementById('all-posts-list').classList.remove('hidden');
-            document.getElementById('friends-posts-list').classList.add('hidden');
-            this.className = "px-4 py-2 w-1/2 bg-white border border-gray-300 border-b-0 cursor-pointer text-gray-900 rounded-tl-lg";
-            document.getElementById('friends-posts-btn').className = "px-4 py-2 w-1/2 bg-gray-200 border border-gray-300 cursor-pointer text-gray-900 rounded-tr-lg";
-          });
-        
-          document.getElementById('friends-posts-btn').addEventListener('click', function() {
-            document.getElementById('friends-posts-list').classList.remove('hidden');
-            document.getElementById('all-posts-list').classList.add('hidden');
-            this.className = "px-4 py-2 w-1/2 bg-white border border-gray-300 border-b-0 cursor-pointer text-gray-900 rounded-tr-lg";
-            document.getElementById('all-posts-btn').className = "px-4 py-2 w-1/2 bg-gray-200 border border-gray-300 cursor-pointer text-gray-900 rounded-tl-lg";
-          });
-        
-          document.getElementById('all-posts-btn').click();
-        </script>
-      </div>
-  
-      <div class="hidden lg:block w-full lg:w-1/4 h-screen sticky top-5">
-        <div class="flex flex-col h-full">
-
-          <div class="h-[5%] p-2 w-full flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-400">
-            <i class="fas fa-search text-gray-500 mr-2"></i>
-            <input type="text" placeholder="Search by name ..." class="w-full focus:outline-none" />
-          </div>
-        
-          <div class="bg-white rounded-lg shadow-md h-[40%] p-2 overflow-y-scroll my-2">
-            <h3 class="text-xl font-semibold text-gray-800 mb-2 flex items-center">
-              <i class="fas fa-user-friends mr-2 text-blue-500"></i>
-              Friends
-            </h3>
-            <% if (locals.user && locals.user.friends.length > 0 ) { %>
-              <ul class="divide-y divide-gray-100">
-                <%
-                  const friendIds = locals.user.friends.map(id => id.toString());
-                  const friends = all_users.filter(user => friendIds.includes(user.id.toString()));
-                %>
-                <% for(friend of friends) { %>
-                  <li class="py-2">
-                    <a href="/users/profile/<%= friend.id %>" class="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md transition-colors duration-300">
-                      <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600">
-                        <% if (friend.avatar) { %>
-                          <img src="<%= friend.avatar %>" alt="<%= friend.name %>" class="w-8 h-8 rounded-full">
-                        <% } else { %>
-                          <%= friend.name.charAt(0).toUpperCase() %>
-                        <% } %>
-                      </div>
-                      <span class="font-medium text-gray-700"><%= friend.name %></span>
-                    </a>
-                  </li>
-                <% } %>
-              </ul>
-            <% } else { %>
-              <p class="text-gray-500 text-center py-4">No friends found</p>
             <% } %>
-          </div>
-          <div class="bg-white rounded-lg shadow-md h-[45%] p-2 overflow-y-scroll my-2">
-            <h3 class="text-xl font-semibold text-gray-800 mb-2 flex items-center">
-              <i class="fas fa-users mr-2 text-blue-500"></i>
-              Peoples
-            </h3>
-              <ul class="divide-y divide-gray-100">
-                <% for(e_user of all_users) { %>
-                  <% if (locals.user && e_user.id !== locals.user.id) { %>
-                  <li class="py-2">
-                    <a href="/users/profile/<%= e_user.id %>" class="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md transition-colors duration-300">
+          </ul>
+        </div>
+      </section>
+
+      <script>
+        document.getElementById('all-posts-btn').addEventListener('click', function() {
+          document.getElementById('all-posts-list').classList.remove('hidden');
+          document.getElementById('friends-posts-list').classList.add('hidden');
+          this.className = "px-4 py-2 w-1/2 bg-white border border-gray-300 border-b-0 cursor-pointer text-gray-900 rounded-tl-lg";
+          document.getElementById('friends-posts-btn').className = "px-4 py-2 w-1/2 bg-gray-200 border border-gray-300 cursor-pointer text-gray-900 rounded-tr-lg";
+        });
+      
+        document.getElementById('friends-posts-btn').addEventListener('click', function() {
+          document.getElementById('friends-posts-list').classList.remove('hidden');
+          document.getElementById('all-posts-list').classList.add('hidden');
+          this.className = "px-4 py-2 w-1/2 bg-white border border-gray-300 border-b-0 cursor-pointer text-gray-900 rounded-tr-lg";
+          document.getElementById('all-posts-btn').className = "px-4 py-2 w-1/2 bg-gray-200 border border-gray-300 cursor-pointer text-gray-900 rounded-tl-lg";
+        });
+      
+        document.getElementById('all-posts-btn').click();
+      </script>
+    </div>
+
+    <div class="hidden lg:block w-full lg:w-1/4 h-screen sticky top-5">
+      <div class="flex flex-col h-full">
+
+        <div class="h-[5%] p-2 w-full flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-400">
+          <i class="fas fa-search text-gray-500 mr-2"></i>
+          <input id="desktop-people-search" type="text" placeholder="Search by name ..." class="w-full focus:outline-none" />
+        </div>
+      
+        <div class="bg-white rounded-lg shadow-md h-[45%] p-2 overflow-y-scroll my-2">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2 flex items-center">
+            <i class="fas fa-users mr-2 text-blue-500"></i>
+            Peoples
+          </h3>
+          <ul id="desktop-peoples-list" class="divide-y divide-gray-100">
+            <% for(e_user of all_users) { %>
+              <% if (locals.user && e_user.id !== locals.user.id) { %>
+                <li class="py-2">
+                  <a href="/users/profile/<%= e_user.id %>" class="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md transition-colors duration-300">
                     <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600">
                       <% if (e_user.avatar) { %>
-                      <img src="<%= e_user.avatar %>" alt="<%= e_user.name %>" class="w-8 h-8 rounded-full">
+                        <img src="<%= e_user.avatar %>" alt="<%= e_user.name %>" class="w-8 h-8 rounded-full">
                       <% } else { %>
-                      <%= e_user.name.charAt(0).toUpperCase() %>
+                        <%= e_user.name.charAt(0).toUpperCase() %>
                       <% } %>
                     </div>
                     <span class="font-medium text-gray-700"><%= e_user.name %></span>
-                    </a>
-                  </li>
-                  <% } %>
-                <% } %>
-              </ul>
-          </div>
+                  </a>
+                </li>
+              <% } %>
+            <% } %>
+          </ul>
+        </div>
+        <div class="bg-white rounded-lg shadow-md h-[40%] p-2 overflow-y-scroll my-2">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2 flex items-center">
+            <i class="fas fa-user-friends mr-2 text-blue-500"></i>
+            Friends
+          </h3>
+          <% if (locals.user && locals.user.friends.length > 0 ) { %>
+            <ul class="divide-y divide-gray-100">
+              <%
+                const friendIds = locals.user.friends.map(id => id.toString());
+                const friends = all_users.filter(user => friendIds.includes(user.id.toString()));
+              %>
+              <% for(friend of friends) { %>
+                <li class="py-2">
+                  <a href="/users/profile/<%= friend.id %>" class="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md transition-colors duration-300">
+                    <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600">
+                      <% if (friend.avatar) { %>
+                        <img src="<%= friend.avatar %>" alt="<%= friend.name %>" class="w-8 h-8 rounded-full">
+                      <% } else { %>
+                        <%= friend.name.charAt(0).toUpperCase() %>
+                      <% } %>
+                    </div>
+                    <span class="font-medium text-gray-700"><%= friend.name %></span>
+                  </a>
+                </li>
+              <% } %>
+            </ul>
+          <% } else { %>
+            <p class="text-gray-500 text-center py-4">No friends found</p>
+          <% } %>
         </div>
       </div>
     </div>
   </div>
-  
-  <!-- Mobile Navigation Bar (Icon-only) -->
+</div>
+
+<!-- Mobile Navigation Bar (Icon-only) -->
 <div class="fixed left-0 inset-y-0 bg-white shadow p-2 flex flex-col justify-around items-center lg:hidden">
-    <a href="/users/profile/<%= locals.user ? locals.user.id : '' %>" class="text-gray-600 hover:text-blue-500">
-      <% if(locals.user && locals.user.avatar) { %>
-        <img src="<%= locals.user.avatar %>" alt="<%= locals.user.name %>" class="w-8 h-8 rounded-full">
-      <% } else if(locals.user) { %>
-        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 flex items-center justify-center text-white font-bold">
-          <%= locals.user.name.charAt(0).toUpperCase() %>
-        </div>
-      <% } else { %>
-        <i class="fas fa-user text-2xl"></i>
-      <% } %>
-    </a>
-    <a href="/" class="text-gray-600 hover:text-blue-500">
-      <i class="fas fa-home text-2xl"></i>
-    </a>
-    <a href="/users/requests" class="text-gray-600 hover:text-blue-500">
-      <i class="fas fa-user-friends text-2xl"></i>
-    </a>
-    <a href="/chats" class="text-gray-600 hover:text-blue-500">
-      <i class="fas fa-envelope text-2xl"></i>
-    </a>
-    <a href="#" class="text-gray-600 hover:text-blue-500">
-      <i class="fas fa-search text-2xl"></i>
-    </a>
-    <a href="#" class="text-gray-600 hover:text-blue-500">
-      <i class="fas fa-info-circle text-2xl"></i>
-    </a>
-
-    <a href="/users/sign-out" class="flex flex-end items-center space-x-3 p-2 rounded-md bg-red-50 text-red-600 hover:bg-red-100 transition-colors duration-300">
-      <i class="fas fa-sign-out-alt"></i>
-    </a>
-  </div>
-
-    
-  <script src="/js/post_comments.js"></script>
-  <script src="/js/home_posts.js"></script>
-  <script src="/js/toggle_likes.js"></script>
-  <script src="/js/user_block.js"></script>
-  <script src="/js/friends.js"></script>
-  
+  <a href="/users/profile/<%= locals.user ? locals.user.id : '' %>" class="text-gray-600 hover:text-blue-500">
+    <% if(locals.user && locals.user.avatar) { %>
+      <img src="<%= locals.user.avatar %>" alt="<%= locals.user.name %>" class="w-8 h-8 rounded-full">
+    <% } else if(locals.user) { %>
+      <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 flex items-center justify-center text-white font-bold">
+        <%= locals.user.name.charAt(0).toUpperCase() %>
+      </div>
+    <% } else { %>
+      <i class="fas fa-user text-2xl"></i>
+    <% } %>
+  </a>
+  <a href="/" class="text-gray-600 hover:text-blue-500">
+    <i class="fas fa-home text-2xl"></i>
+  </a>
+  <a href="/users/requests" class="text-gray-600 hover:text-blue-500">
+    <i class="fas fa-user-friends text-2xl"></i>
+  </a>
+  <a href="/chats" class="text-gray-600 hover:text-blue-500">
+    <i class="fas fa-envelope text-2xl"></i>
+  </a>
+  <a href="#" id="mobile-search-toggle" class="text-gray-600 hover:text-blue-500">
+    <i class="fas fa-search text-2xl"></i>
+  </a>
   <script>
-    // Toggle comments visibility
-    document.querySelectorAll('.comment-toggle').forEach(button => {
-      button.addEventListener('click', function() {
-        const postId = this.closest('li').id.split('-')[1];
-        const commentsList = document.getElementById(`post-comments-${postId}`);
-        commentsList.closest('.post-comments').classList.toggle('hidden');
-      });
-    });
-  
-    // Hide comment sections if comments exist
-    document.querySelectorAll('.post-comments').forEach(commentSection => {
-      const comments = commentSection.querySelectorAll('li');
-      if (comments.length > 0) {
-        commentSection.classList.add('hidden');
-      }
+    document.getElementById('mobile-search-toggle').addEventListener('click', function(e) {
+      e.preventDefault();
+      const mobileSearchContainer = document.getElementById('mobile-search-container');
+      mobileSearchContainer.classList.toggle('hidden');
     });
   </script>
+  <a href="#" class="text-gray-600 hover:text-blue-500">
+    <i class="fas fa-info-circle text-2xl"></i>
+  </a>
+
+  <a href="/users/sign-out" class="flex flex-end items-center space-x-3 p-2 rounded-md bg-red-50 text-red-600 hover:bg-red-100 transition-colors duration-300">
+    <i class="fas fa-sign-out-alt"></i>
+  </a>
+</div>
+
   
+<script src="/js/post_comments.js"></script>
+<script src="/js/home_posts.js"></script>
+<script src="/js/toggle_likes.js"></script>
+<script src="/js/user_block.js"></script>
+<script src="/js/friends.js"></script>
+
+<script>
+  // Toggle comments visibility
+  document.querySelectorAll('.comment-toggle').forEach(button => {
+    button.addEventListener('click', function() {
+      const postId = this.closest('li').id.split('-')[1];
+      const commentsList = document.getElementById(`post-comments-${postId}`);
+      commentsList.closest('.post-comments').classList.toggle('hidden');
+    });
+  });
+
+  // Hide comment sections if comments exist
+  document.querySelectorAll('.post-comments').forEach(commentSection => {
+    const comments = commentSection.querySelectorAll('li');
+    if (comments.length > 0) {
+      commentSection.classList.add('hidden');
+    }
+  });
+
+  // Desktop: When "Explore Peoples" is clicked, scroll to and focus on the search input.
+  document.getElementById('explore-peoples-link').addEventListener('click', function(e) {
+    e.preventDefault();
+    const searchInput = document.getElementById('desktop-people-search');
+    searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    searchInput.focus();
+  });
+
+  // Function to filter list items based on search query.
+  function filterList(inputId, listId) {
+    const query = document.getElementById(inputId).value.toLowerCase();
+    const listItems = document.querySelectorAll(`#${listId} li`);
+    listItems.forEach(li => {
+      const nameText = li.textContent.toLowerCase();
+      li.style.display = nameText.includes(query) ? '' : 'none';
+    });
+  }
+
+  // Attach event listener for desktop search.
+  document.getElementById('desktop-people-search').addEventListener('input', function() {
+    filterList('desktop-people-search', 'desktop-peoples-list');
+  });
+
+  // Attach event listener for mobile search.
+  document.getElementById('mobile-people-search').addEventListener('input', function() {
+    filterList('mobile-people-search', 'mobile-peoples-list');
+  });
+</script>
