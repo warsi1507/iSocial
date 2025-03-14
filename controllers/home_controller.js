@@ -6,12 +6,17 @@ module.exports.home = async function (req, res) {
         let posts = await Post.find({})
             .sort('-createdAt')
             .populate({
-                path: 'user likes'
+                path: 'user',
+                select: 'name avatar' // Include the avatar field
+            })
+            .populate({
+                path: 'likes image'
             })
             .populate({
                 path: 'comments',
                 populate: {
-                    path: 'user likes'
+                    path: 'user',
+                    select: 'name avatar' // Include the avatar field for comments' users
                 },
                 options: { sort: { 'createdAt': -1 } }
             });

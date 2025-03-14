@@ -2,36 +2,45 @@ const Post = require('../models/post');
 const Comment = require('../models/comment');
 const Like = require('../models/like');
 
-module.exports.create = async function(req, res){
-    try {
-        let newPost = await Post.create({
-            content: req.body.content,
-            user: req.user._id
-        });
-
-        if(req.xhr){
-            return res.status(200).json({
-                data:{
-                    post: await newPost.populate('user', 'name')
-                },
-                message: "Post was Created"
-            });
+module.exports.create = async function(req, res) {
+    Post.uploadImage(req, res, async function (err) {
+        if (err) {
+            console.log('Multer Error:', err);
+            return res.status(500).send("Internal Server Error");
         }
-    
-        req.flash('success', 'Post was Created');
-        return res.redirect(req.get('Referer') || '/');
-
-    } catch (err) {
-
-        console.error("Error in post creation:", err);
-        if (req.xhr) {
-            return res.status(500).json({
-                message: "Internal Server Error"
+        try {
+            let newPost = await Post.create({
+                content: req.body.content,
+                user: req.user._id
             });
+
+            if (req.file) {
+                newPost.image = Post.postImgPath + '/' + req.file.filename;
+            }
+            await newPost.save();
+
+            // Populate the user field with name (include more fields if needed)
+            await newPost.populate('user', 'name avatar');
+
+            if (req.xhr) {
+                return res.status(200).json({
+                    data: { post: await newPost.populate('user', 'name avatar') },
+                    message: "Post was Created"
+                });
+            }
+        
+            req.flash('success', 'Post was Created');
+            return res.redirect(req.get('Referer') || '/');
+        } catch (error) {
+            console.error("Error in post creation:", error);
+            if (req.xhr) {
+                return res.status(500).json({ message: "Internal Server Error" });
+            }
+            return res.status(500).send("Internal Server Error");
         }
-        return res.status(500).send("Internal Server Error");
-    }
-}
+    });
+};
+
 
 module.exports.destroy = async function (req, res) {
     try {

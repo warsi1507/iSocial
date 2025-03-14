@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 const Post = require('./post');
+require('dotenv').config();
+
 const multer = require('multer');
 const path = require('path');
 const AVATAR_PATH = path.join('/uploads/users/avatars');
 
 const bcrypt = require('bcrypt');
-const SALT_ROUNDS = 10;
+const SALT_ROUNDS = process.env.SALT_ROUNDS;
 
 const userSchema = new mongoose.Schema({
     email: {

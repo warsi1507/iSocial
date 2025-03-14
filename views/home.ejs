@@ -79,30 +79,30 @@
     <!-- Main Content -->
     <div class="w-[90%] ml-12 lg:ml-0 lg:w-2/4">
       <!-- Mobile Search Bar (Visible Only on Mobile) -->
-<div id="mobile-search-container" class="lg:hidden hidden p-4 bg-white rounded-lg shadow-md mb-6">
-  <div class="flex items-center border border-gray-300 rounded-lg p-2">
-    <i class="fas fa-search text-gray-500 mr-2"></i>
-    <input id="mobile-people-search" type="text" placeholder="Search peoples by name..." class="w-full focus:outline-none" />
-  </div>
-  <ul id="mobile-peoples-list" class="mt-4 divide-y divide-gray-100">
-    <% for(e_user of all_users) { %>
-      <% if (locals.user && e_user.id !== locals.user.id) { %>
-        <li class="py-2">
-          <a href="/users/profile/<%= e_user.id %>" class="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md transition-colors duration-300">
-            <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600">
-              <% if (e_user.avatar) { %>
-                <img src="<%= e_user.avatar %>" alt="<%= e_user.name %>" class="w-8 h-8 rounded-full">
-              <% } else { %>
-                <%= e_user.name.charAt(0).toUpperCase() %>
-              <% } %>
-            </div>
-            <span class="font-medium text-gray-700"><%= e_user.name %></span>
-          </a>
-        </li>
-      <% } %>
-    <% } %>
-  </ul>
-</div>
+      <div id="mobile-search-container" class="lg:hidden hidden p-4 bg-white rounded-lg shadow-md mb-6">
+        <div class="flex items-center border border-gray-300 rounded-lg p-2">
+          <i class="fas fa-search text-gray-500 mr-2"></i>
+          <input id="mobile-people-search" type="text" placeholder="Search peoples by name..." class="w-full focus:outline-none" />
+        </div>
+        <ul id="mobile-peoples-list" class="mt-4 divide-y divide-gray-100">
+          <% for(e_user of all_users) { %>
+            <% if (locals.user && e_user.id !== locals.user.id) { %>
+              <li class="py-2">
+                <a href="/users/profile/<%= e_user.id %>" class="flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-md transition-colors duration-300">
+                  <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600">
+                    <% if (e_user.avatar) { %>
+                      <img src="<%= e_user.avatar %>" alt="<%= e_user.name %>" class="w-8 h-8 rounded-full">
+                    <% } else { %>
+                      <%= e_user.name.charAt(0).toUpperCase() %>
+                    <% } %>
+                  </div>
+                  <span class="font-medium text-gray-700"><%= e_user.name %></span>
+                </a>
+              </li>
+            <% } %>
+          <% } %>
+        </ul>
+      </div>
 
       <section id="feed-posts" class="mb-2">
         <% if (locals.user) { %>
@@ -117,19 +117,22 @@
               </div>
               <h3 class="text-lg font-medium text-gray-800">Create a Post</h3>
             </div>
-            
-            <form action="/posts/create" method="post" id="new-post-form">
+            <form action="/posts/create" enctype="multipart/form-data" method="post" id="new-post-form">
               <textarea name="content" rows="3" 
                 placeholder="What's on your mind?" 
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none mb-3"
                 maxlength="400" required></textarea>
               
+              <!-- Preview Container for the Uploaded Image -->
+              <div id="preview-container" class="mb-3"></div>
+              
               <div class="flex justify-between items-center">
                 <div class="flex space-x-3">
-                  <button type="button" class="flex items-center text-gray-600 hover:text-blue-500 transition-colors duration-300">
+                  <input id="image-upload" type="file" name="post_img">
+                  <label for="image-upload" class="flex items-center text-gray-600 hover:text-blue-500 transition-colors duration-300 cursor-pointer">
                     <i class="fas fa-image mr-1"></i>
                     <span class="text-sm">Photo</span>
-                  </button>
+                  </label>
                 </div>
                 
                 <button type="submit" class="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-6 py-2 rounded-lg transition duration-300 shadow-sm">
@@ -137,6 +140,7 @@
                 </button>
               </div>
             </form>
+            
           </div>
         <% } %>
 
@@ -340,6 +344,39 @@
       li.style.display = nameText.includes(query) ? '' : 'none';
     });
   }
+
+  document.getElementById('image-upload').addEventListener('change', function(e) {
+      const previewContainer = document.getElementById('preview-container');
+      previewContainer.innerHTML = ''; // Clear any previous preview
+
+      if (this.files && this.files[0]) {
+          const file = this.files[0];
+
+          // Create an image URL using URL.createObjectURL (or use FileReader for a base64 string)
+          const fileURL = URL.createObjectURL(file);
+
+          // Create the image element
+          const img = document.createElement('img');
+          img.src = fileURL;
+          img.alt = 'Uploaded Preview';
+          img.className = "w-full h-auto rounded-lg shadow-sm"; // Adjust styles as needed
+
+          // Create the remove button
+          const removeBtn = document.createElement('button');
+          removeBtn.textContent = 'Remove';
+          removeBtn.className = "bg-red-500 text-white px-2 py-1 rounded mt-2 block";
+          removeBtn.addEventListener('click', function() {
+              // Clear the preview and reset the file input
+              previewContainer.innerHTML = '';
+              document.getElementById('image-upload').value = '';
+          });
+
+          // Append the image and remove button to the preview container
+          previewContainer.appendChild(img);
+          previewContainer.appendChild(removeBtn);
+      }
+  });
+
 
   // Attach event listener for desktop search.
   document.getElementById('desktop-people-search').addEventListener('input', function() {

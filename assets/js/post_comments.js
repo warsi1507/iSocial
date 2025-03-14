@@ -57,7 +57,7 @@ const CommentHandler = {
             <div class="flex items-start justify-between">
                 <div class="flex items-start space-x-2">
                 <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-500">
-                    ${comment.user.name.charAt(0).toUpperCase()}
+                    ${comment.user.avatar ? `<img src="${comment.user.avatar}" alt="${comment.user.name}" class="w-8 h-8 rounded-full">` : comment.user.name.charAt(0).toUpperCase()}
                 </div>
                 <div>
                     <p class="font-medium text-gray-700">${comment.user.name}</p>

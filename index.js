@@ -85,7 +85,7 @@ server.listen(process.env.PORT, (err)=>{
 
 
 
-cron.schedule('0 * * * *', async () => {
+cron.schedule('0 */6 * * *', async () => {
     console.log("Running cleanup job for expired unverified users...");
     await deleteExpiredUsers();
 });
