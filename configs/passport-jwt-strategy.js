@@ -1,13 +1,13 @@
 const passport = require('passport');
 const JWTstrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
-
+require('dotenv').config();
 const User = require('../models/user');
 
 
 const opts = {
     jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-    secretOrKey: 'isocial'
+    secretOrKey: process.env.JWT_SEC_KEY
 }
 
 passport.use(new JWTstrategy(opts, 

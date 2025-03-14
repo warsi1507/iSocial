@@ -9,7 +9,7 @@ exports.sendVerificationEmail = async (user) => {
     }
 
     try {
-        const verificationUrl = `http://localhost:8000/users/verify-email/${user.verificationToken}`;
+        const verificationUrl = `${process.env.BACKEND_URL}/users/verify-email/${user.verificationToken}`;
         
         const emailHTML = await nodemailer.renderTemplate({ user, verificationUrl }, '/user/email_verification.ejs');
         

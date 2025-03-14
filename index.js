@@ -44,8 +44,7 @@ app.set('views', './views');
 
 app.use(session({
     name: 'iSocial',
-    // TODO : change it before deployment
-    secret: 'blahblahblah',
+    secret: process.env.SESSION_SECRET,
     saveUninitialized: false,
     resave: false,
     cookie: {
