@@ -66,33 +66,6 @@
   - Node.js (v14.x or higher)
   - MongoDB (v4.x or higher)
   - npm or yarn package manager
-  - bcrypt
-  - bull
-  - connect-flash
-  - connect-mongo
-  - cookie-parser
-  - dotenv
-  - ejs
-  - express
-  - express-ejs-layouts
-  - express-session
-  - ioredis
-  - jsonwebtoken
-  - mongoose
-  - multer
-  - node-cron
-  - nodemailer
-  - passport
-  - passport-google-oauth
-  - passport-jwt
-  - passport-local
-  - sass
-  - socket.io
-  - toastr
-  - validator
-  - @tailwindcss/cli
-  - nodemon
-  - tailwindcss
 
   ### Setup Steps
 
@@ -111,24 +84,40 @@
      - Create a `.env` file in the root directory
      - Add the following environment variables:
      ```
+      # Server configuration
       PORT=8000
       BACKEND_URL='http://localhost:8000'
 
+      # Bull configuration
       BULL_PORT=6379
-      BULL_HOST_URL='127.0.0.1'
+      BULL_HOST_URL='your-bull-host-url'
+      BULL_PASSWORD='your-bull-password'
 
-      JWT_SEC_KEY='your_jwt_secret_key'
-      SESSION_SECRET='your_session_secret'
+      # Security keys (ensure these are kept secure)
+      JWT_SEC_KEY='your-jwt-sec-key'
+      SESSION_SECRET='your-session-secret'
 
-      MONGOOSE_URL='mongodb://localhost/iSocial'
+      # Database configuration
+      MONGOOSE_URL='your-mongoose-url'
 
-      GOOGLE_CLIENT_ID="your_google_client_id"
-      GOOGLE_CLIENT_SECRET="your_google_client_secret"
-      MAILER_EMAIL="your_email@example.com"
-      MAILER_PASS="your_email_password"
+      # Google OAuth configuration
+      GOOGLE_CLIENT_ID="your-google-client-id"
+      GOOGLE_CLIENT_SECRET="your-google-client-secret"
 
+      # Mailer configuration
+      MAILER_EMAIL="your-mailer-email"
+      MAILER_PASS="your-mailer-pass"
+
+      # CORS configuration
       CORS_ORIGIN="*"
+
+      # Bcrypt configuration
       BCRYPT_SALTS=10
+
+      # Cloudinary configuration
+      CLOUDINARY_CLOUD_NAME='your-cloudinary-cloud-name'
+      CLOUDINARY_API_KEY='your-cloudinary-api-key'
+      CLOUDINARY_API_SECRET='your-cloudinary-api-secret'
      ```
 
   4. **Start the development server**

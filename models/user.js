@@ -1,10 +1,7 @@
 const mongoose = require('mongoose');
 const Post = require('./post');
 require('dotenv').config();
-
-const multer = require('multer');
-const path = require('path');
-const AVATAR_PATH = path.join('/uploads/users/avatars');
+const { avatarUpload } = require('../configs/upload');
 
 const bcrypt = require('bcrypt');
 const SALT_ROUNDS = process.env.SALT_ROUNDS || 10;
@@ -83,29 +80,8 @@ userSchema.pre('remove', async function(next) {
     }
 });
 
-let storage = multer.diskStorage({
-    destination: function(req, file, cb){
-        cb(null, path.join(__dirname, '..', AVATAR_PATH));
-    },
-    filename: function(req, file, cb){
 
-        const uniqueFilename = file.fieldname + '-' + Date.now() + path.extname(file.originalname);
-        cb(null, uniqueFilename);
-    }
-});
-
-userSchema.statics.uploadedAvatar = multer({
-    storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 },
-    fileFilter: function(req, file, cb) {
-        if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-            return cb(new Error('Only image files are allowed!'), false);
-        }
-        cb(null, true);
-    }
-}).single('avatar');
-userSchema.statics.avatarPath = AVATAR_PATH;
-
+userSchema.statics.uploadedAvatar = avatarUpload;
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

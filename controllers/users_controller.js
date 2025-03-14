@@ -51,7 +51,6 @@ module.exports.profile = async function (req, res) {
                 options: { sort: { 'createdAt': -1 } }
             });
         
-            console.log(posts[0]);
             
         return res.render('user_profile', {
             title: `${profileUser.name}'s Profile`,
@@ -95,13 +94,7 @@ module.exports.update = async function(req, res){
 
 
                 if(req.file){
-                    if (user.avatar) {
-                        const avatarPath = path.join(__dirname, '..', user.avatar);
-                        if (fs.existsSync(avatarPath)) {
-                            fs.unlinkSync(avatarPath);
-                        }
-                    }
-                    user.avatar = User.avatarPath + '/' + req.file.filename;
+                    user.avatar = req.file.path;
                 }
                 await user.save();
             });

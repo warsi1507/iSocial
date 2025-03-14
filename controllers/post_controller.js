@@ -15,7 +15,7 @@ module.exports.create = async function(req, res) {
             });
 
             if (req.file) {
-                newPost.image = Post.postImgPath + '/' + req.file.filename;
+                newPost.image = req.file.path;
             }
             await newPost.save();
 
