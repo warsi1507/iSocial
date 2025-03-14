@@ -87,12 +87,24 @@ let storage = multer.diskStorage({
         cb(null, path.join(__dirname, '..', AVATAR_PATH));
     },
     filename: function(req, file, cb){
-        cb(null, file.fieldname + '-' + Date.now())
+        // Add file extension to filename
+        const uniqueFilename = file.fieldname + '-' + Date.now() + path.extname(file.originalname);
+        cb(null, uniqueFilename);
     }
 });
 
-// static functions
-userSchema.statics.uploadedAvatar = multer({storage: storage}).single('avatar');
+// static functions - fixed naming to match what's used in controller
+userSchema.statics.uploadedAvatar = multer({
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+    fileFilter: function(req, file, cb) {
+        // Accept images only
+        if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+            return cb(new Error('Only image files are allowed!'), false);
+        }
+        cb(null, true);
+    }
+}).single('avatar');
 userSchema.statics.avatarPath = AVATAR_PATH;
 
 const User = mongoose.model('User', userSchema);

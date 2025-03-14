@@ -37,17 +37,22 @@ module.exports.profile = async function (req, res) {
         let isBlockedBy = profileUser.blockedUsers.some(blockedId => blockedId.equals(currentUser._id));
 
         let posts = await Post.find({user: profileUser._id}).sort('-createdAt')
-        .populate({
-            path: 'user likes'
-        })
-        .populate({
-            path: 'comments',
-            populate: {
-                path: 'user likes'
-            },
-            options: { sort: { 'createdAt': -1 } }
-        });
+            .populate({
+                path: 'user',
+                select: 'name avatar' // Include the avatar field
+            })
+            .populate('likes')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'user',
+                    select: 'name avatar' // Include the avatar field for comments' users
+                },
+                options: { sort: { 'createdAt': -1 } }
+            });
         
+            console.log(posts[0]);
+            
         return res.render('user_profile', {
             title: `${profileUser.name}'s Profile`,
             user: currentUser,

@@ -9,9 +9,7 @@ module.exports.home = async function (req, res) {
                 path: 'user',
                 select: 'name avatar' // Include the avatar field
             })
-            .populate({
-                path: 'likes image'
-            })
+            .populate('likes')
             .populate({
                 path: 'comments',
                 populate: {

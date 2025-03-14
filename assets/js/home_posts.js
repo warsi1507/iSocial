@@ -18,12 +18,13 @@ const PostHandler = {
             type: 'POST',
             url: '/posts/create',
             data: formData,
-            contentType: false, // prevent jQuery from overriding the content type
-            processData: false, // prevent jQuery from processing the data
+            contentType: false,
+            processData: false,
             success: function(response) {
                 let newPost = PostHandler.generatePostHTML(response.data.post);
                 $('#posts-list-container > ul').prepend(newPost);
                 newPostForm[0].reset();
+                $('#preview-container').empty();
                 toastr['success'](response.message || 'Post created successfully.');
             },
             error: function(xhr) {
@@ -121,7 +122,6 @@ const PostHandler = {
     }
 };
 
-// Initialize PostHandler on document ready
 $(function() {
     PostHandler.init();
 });

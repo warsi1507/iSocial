@@ -3,7 +3,7 @@ const Comment = require('./comment');
 
 const multer = require('multer');
 const path = require('path');
-const POST_IMG_PATH = path.join('uploads/posts/images');
+const POST_IMG_PATH = path.join('/uploads/posts/images');
 
 const postSchema = new mongoose.Schema({
     content: {
@@ -70,8 +70,6 @@ postSchema.statics.uploadImage = multer({
         cb(null, true);
     }
 }).single('post_img');
-postSchema.statics.postImgPath = POST_IMG_PATH;
-
 postSchema.statics.postImgPath = POST_IMG_PATH;
 
 const Post = mongoose.model('Post', postSchema);
