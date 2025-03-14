@@ -55,7 +55,6 @@ module.exports.acceptRequest = async function (req, res) {
 
         let friendship = await Friendship.findOne({ from_user: sender._id, to_user: recipient._id });
         if (!friendship) return res.status(400).json({ message: 'Request not found' });
-        console.log("herr");
 
         sender.friends.push(recipient._id);
         recipient.friends.push(sender._id);

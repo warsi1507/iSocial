@@ -1,8 +1,6 @@
 const nodemailer = require('../configs/node-mailer');
 
 exports.newComment = async (comment) => {
-    console.log('Sending Mail for making new comment ...');
-    
     if(!comment.user || !comment.user.email){
         console.error('User email not found');
         return;

@@ -31,7 +31,6 @@ const FriendActions = {
     sendFriendRequest: function(event){
         let self = $(event.currentTarget);
         let recipientId = self.data('id');
-        console.log(recipientId)
         $.ajax({
             type: 'POST',
             url: '/friends/send-request',

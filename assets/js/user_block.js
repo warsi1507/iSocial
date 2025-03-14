@@ -31,7 +31,6 @@ const UserBlockActions = {
         });
     },
     unblockUser: function(event){
-        console.log("HERE...");
 
         let self = $(event.currentTarget);
         let userId = self.data('id');

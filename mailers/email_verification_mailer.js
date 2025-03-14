@@ -2,7 +2,6 @@ const nodemailer = require('../configs/node-mailer');
 require('dotenv').config();
 
 exports.sendVerificationEmail = async (user) => {
-    console.log('Sending verification email...');
 
     if (!user.email) {
         console.error('User email not found');
@@ -20,8 +19,6 @@ exports.sendVerificationEmail = async (user) => {
             subject: "Email Verification - iSocial",
             html: emailHTML
         });
-        
-        console.log("Verification email sent!", info);
     } catch (err) {
         console.error('Error in sending verification email:', err);
     }
