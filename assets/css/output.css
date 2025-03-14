@@ -461,6 +461,12 @@
   .h-\[45\%\] {
     height: 45%;
   }
+  .h-\[80vh\] {
+    height: 80vh;
+  }
+  .h-\[90\%\] {
+    height: 90%;
+  }
   .h-\[93\%\] {
     height: 93%;
   }
@@ -476,8 +482,14 @@
   .max-h-96 {
     max-height: calc(var(--spacing) * 96);
   }
+  .max-h-\[80vh\] {
+    max-height: 80vh;
+  }
   .max-h-\[calc\(100vh-240px\)\] {
     max-height: calc(100vh - 240px);
+  }
+  .max-h-screen {
+    max-height: 100vh;
   }
   .min-h-screen {
     min-height: 100vh;

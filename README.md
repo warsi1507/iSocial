@@ -110,7 +110,7 @@
   3. **Environment configuration**
      - Create a `.env` file in the root directory
      - Add the following environment variables:
-       ```
+     ```
       PORT=8000
       BACKEND_URL='http://localhost:8000'
 
@@ -129,7 +129,7 @@
 
       CORS_ORIGIN="*"
       BCRYPT_SALTS=10
-       ```
+     ```
 
   4. **Start the development server**
      ```bash

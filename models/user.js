@@ -7,7 +7,7 @@ const path = require('path');
 const AVATAR_PATH = path.join('/uploads/users/avatars');
 
 const bcrypt = require('bcrypt');
-const SALT_ROUNDS = process.env.SALT_ROUNDS;
+const SALT_ROUNDS = process.env.SALT_ROUNDS || 10;
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -61,6 +61,7 @@ userSchema.pre('save', async function(next) {
     if (!this.isModified('password')) {
         return next();
     }
+    if (!this.password) return next();
     try {
         this.password = await bcrypt.hash(this.password, SALT_ROUNDS);
         return next();

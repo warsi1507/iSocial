@@ -111,7 +111,6 @@ function sendMessage() {
   if (message && currentRoom) {
     const messageObj = { message: message, timestamp: Date.now() };
     socket.emit("send_message", { roomId: currentRoom, userName: userId, message, receiverName: currentFriend });
-    appendMessage(messageObj, "self");
     messageInput.value = "";
     hideTypingIndicator();
   }
