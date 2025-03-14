@@ -7,14 +7,14 @@ module.exports.home = async function (req, res) {
             .sort('-createdAt')
             .populate({
                 path: 'user',
-                select: 'name avatar' // Include the avatar field
+                select: 'name avatar'
             })
             .populate('likes')
             .populate({
                 path: 'comments',
                 populate: {
                     path: 'user',
-                    select: 'name avatar' // Include the avatar field for comments' users
+                    select: 'name avatar' 
                 },
                 options: { sort: { 'createdAt': -1 } }
             });

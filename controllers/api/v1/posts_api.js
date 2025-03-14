@@ -41,14 +41,3 @@ module.exports.destroy = async function (req, res) {
         });
     }
 }
-
-/* I will remove it after sometime
-    - How This Works in a Full Flow
-    - User Logs In → Gets a JWT token.
-    - User Sends a DELETE Request → DELETE /posts/:id with JWT in the header.
-    - JWT is Validated → Passport.js extracts user info from the token.
-    - Check if the Post Belongs to the User:
-        ✅ If Yes → Delete the post & comments.
-        ❌ If No → Return 401 Unauthorized.
-    - Response is Sent to the Client.
-*/

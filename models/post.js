@@ -14,7 +14,6 @@ const postSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    // include the array of ids of all comments in this post schema itself
     comments:[
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -38,7 +37,6 @@ const postSchema = new mongoose.Schema({
 
 postSchema.pre('remove', async function(next) {
     try {
-        // Delete all comments that reference this post
         await Comment.deleteMany({ post: this._id });
         next();
     } catch (err) {
@@ -52,18 +50,15 @@ let storage = multer.diskStorage({
         cb(null, path.join(__dirname, '..', POST_IMG_PATH));
     },
     filename: function(req, file, cb){
-        // Add file extension to filename
         const uniqueFilename = file.fieldname + '-' + Date.now() + path.extname(file.originalname);
         cb(null, uniqueFilename);
     }
 });
 
-// static functions - fixed naming to match what's used in controller
 postSchema.statics.uploadImage = multer({
     storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+    limits: { fileSize: 5 * 1024 * 1024 },
     fileFilter: function(req, file, cb) {
-        // Accept images only
         if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
             return cb(new Error('Only image files are allowed!'), false);
         }

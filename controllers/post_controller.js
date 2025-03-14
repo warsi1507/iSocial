@@ -19,7 +19,6 @@ module.exports.create = async function(req, res) {
             }
             await newPost.save();
 
-            // Populate the user field with name (include more fields if needed)
             await newPost.populate('user', 'name avatar');
 
             if (req.xhr) {
@@ -46,7 +45,6 @@ module.exports.destroy = async function (req, res) {
     try {
         let post = await Post.findById(req.params.id);
 
-        // .id is string(._id)
         if (post.user == req.user.id) {
 
             await Comment.deleteMany({ post: req.params.id });

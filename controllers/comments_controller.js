@@ -19,7 +19,6 @@ module.exports.create = async function(req, res){
             
             comment = await comment.populate('user', 'name email avatar');
             
-            // adding job of sending email to redis Queue (Jobs_Q)
             await queue.add('comment_emails', comment, {
                 attempts: 3,
                 backoff: 5000

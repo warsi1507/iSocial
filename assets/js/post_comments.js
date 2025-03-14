@@ -110,7 +110,6 @@ const CommentHandler = {
     }
 };
 
-// Shorthand for document ready
 $(function() {
     CommentHandler.init();
 });

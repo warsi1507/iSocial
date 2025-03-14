@@ -39,14 +39,14 @@ module.exports.profile = async function (req, res) {
         let posts = await Post.find({user: profileUser._id}).sort('-createdAt')
             .populate({
                 path: 'user',
-                select: 'name avatar' // Include the avatar field
+                select: 'name avatar'
             })
             .populate('likes')
             .populate({
                 path: 'comments',
                 populate: {
                     path: 'user',
-                    select: 'name avatar' // Include the avatar field for comments' users
+                    select: 'name avatar'
                 },
                 options: { sort: { 'createdAt': -1 } }
             });
@@ -118,10 +118,9 @@ module.exports.update = async function(req, res){
     }
 }
 
-// render the sign-up page
 module.exports.signUp = function (req, res) {
     if (req.isAuthenticated()) {
-        return res.redirect('/users/profile');
+        return res.redirect('/');
     }
 
     return res.render('user_sign_up', {
@@ -129,21 +128,18 @@ module.exports.signUp = function (req, res) {
     })
 }
 
-// render the sign-in page
 module.exports.signIn = function (req, res) {
     if (req.isAuthenticated()) {
-        return res.redirect('/users/profile');
+        return res.redirect('/');
     }
     
     return res.render('user_sign_in', {
         title: 'iSocial | Sign In'
     })
 }
-
-// get the sign-up data 
+ 
 module.exports.create = async function (req, res) {
     try {
-        // Check if passwords match
         if (req.body.password !== req.body.confirm_password) {
             req.flash('error', 'Password and Confirm Password do not match')
             return res.redirect(req.get('Referer') || '/');
@@ -153,8 +149,6 @@ module.exports.create = async function (req, res) {
             req.flash('error', 'Password is not strong enough. It must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.');
             return res.redirect(req.get('Referer') || '/');
         }
-
-        // Check if the user already exists
         let user = await User.findOne({ email: req.body.email });
 
         if (user) {
@@ -162,16 +156,13 @@ module.exports.create = async function (req, res) {
             return res.redirect(req.get('Referer') || '/');
         }
 
-        // Create a new user
         let newUser = await User.create(req.body);
          
-        // Generate email verification token
          const verificationToken = crypto.randomBytes(20).toString('hex');
          newUser.verificationToken = verificationToken;
          newUser.isVerified = false;
          newUser.verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
          
-         // Add verification email job to the queue
          await queue.add('verification_emails', newUser, {
              attempts: 3,
              backoff: 5000
@@ -179,19 +170,15 @@ module.exports.create = async function (req, res) {
             
         await newUser.save();
         console.log("***** User Account Created *****");
-        // console.log(newUser);
 
         req.flash('success', 'Account created! Please verify your email before signing in.')
-        // Redirect to sign-in page
         return res.redirect('/users/sign-in');
     } catch (err) {
-        // Handle errors
         console.error("Error in user creation:", err);
         return res.status(500).send("Internal Server Error");
     }
 };
 
-// render reset password page without access
 module.exports.resetPassword = function(req, res) {
     return res.render('reset_password',
         {
@@ -201,7 +188,6 @@ module.exports.resetPassword = function(req, res) {
     );
 }
 
-// sending reset password mail
 module.exports.resetPassMail = async function(req, res) {
     try {
         let user = await User.findOne({ email: req.body.email });
@@ -231,7 +217,6 @@ module.exports.resetPassMail = async function(req, res) {
     }
 }
 
-// render reset password page with access
 module.exports.setPassword = async function(req, res){
     try {
         let user = await User.findOne({accessToken: req.params.accessToken});
@@ -255,7 +240,6 @@ module.exports.setPassword = async function(req, res){
     }
 }
 
-// setting new password
 module.exports.updatePassword = async function(req, res) {
     try {
         let user = await User.findOne({ accessToken: req.params.accessToken });
@@ -280,21 +264,19 @@ module.exports.updatePassword = async function(req, res) {
     }
 }
 
-// Sign in and create a session
 module.exports.createSession = function (req, res) {
     req.flash('success', 'Logged in Successfully');
     return res.redirect('/');
 }
 
-// Sign out 
 module.exports.destroySession = function (req, res){
     req.logout(function(err) {
         if (err) {
             console.error('Error during logout:', err);
-            return res.redirect('/error'); // Handle error if needed
+            return res.redirect('/error');
         }
         req.flash('success', 'Logged out Successfully')
-        return res.redirect('/'); // Redirect after successful logout
+        return res.redirect('/');
     });
 }
 
@@ -378,7 +360,6 @@ module.exports.friendRequests = async function(req, res) {
 module.exports.verifyEmail = async function(req, res) {
     try {
         const token = req.params.token;
-        // Find the user with the matching verification token
         const user = await User.findOne({ verificationToken: token });
         
         if (!user) {
@@ -388,7 +369,6 @@ module.exports.verifyEmail = async function(req, res) {
             });
         }
         
-        // Mark the user as verified and remove the token
         user.isVerified = true;
         user.verificationToken = undefined;
         await user.save();

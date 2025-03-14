@@ -1,13 +1,9 @@
-<!-- user_profile.ejs - Combined Template -->
 <div class="container min-h-screen bg-gray-50 mx-auto px-4 py-8 sm:px-6 lg:px-8">
   <div class="max-w-4xl mx-auto">
-    <!-- Profile Header -->
     <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
-      <!-- Cover Image -->
       <div class="bg-gradient-to-r from-blue-500 to-cyan-500 h-32 relative"></div>
       
       <div class="relative px-6 pb-6">
-        <!-- Avatar -->
         <div class="absolute -top-32 left-6 flex items-end">
           <div class="relative">
             <% if (profile_user.avatar) { %>
@@ -33,7 +29,6 @@
           </div>
         </div>
         
-        <!-- Profile Info -->
         <div class="mt-16 pt-4">
           <div class="flex justify-between items-start">
             <div>
@@ -41,7 +36,6 @@
               <p class="text-gray-600"><%= profile_user.email %></p>
             </div>
             
-            <!-- Action Buttons -->
             <div class="flex space-x-2">
               <% if (user.id == profile_user.id) { %>
                 <button id="edit-profile-btn" class="bg-cyan-600 text-white px-4 py-2 rounded-md hover:bg-cyan-700 transition duration-300 shadow-sm flex items-center">
@@ -86,7 +80,6 @@
                     </button>
                   <% } %>
                   
-                  <!-- Block / Unblock buttons -->
                   <% if (!isBlocked && !isBlockedBy && !hasReceivedRequest) { %>
                     <button class="block-user bg-yellow-100 text-yellow-600 px-4 py-2 rounded-md hover:bg-yellow-200 transition duration-300 shadow-sm flex items-center"
                             data-id="<%= profile_user.id %>"
@@ -112,8 +105,7 @@
               <% } %>
             </div>
           </div>
-          
-          <!-- Profile Edit Form - Only for own profile -->
+
             <% if (user.id == profile_user.id) { %>
             <div id="edit-profile-form" class="hidden mt-6 space-y-4">
               <form action="/users/update/<%= profile_user.id %>" enctype="multipart/form-data" method="post">
@@ -159,7 +151,6 @@
       </div>
     </div>
     
-    <!-- User Posts Section -->
     <% if (typeof posts !== 'undefined') { %>
       <div class="bg-white rounded-lg shadow-md p-6">
         <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
